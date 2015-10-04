@@ -10,10 +10,6 @@ import java.util.TreeSet;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-
 /**
  * @author Roma Representation of course and modules.
  */
@@ -48,11 +44,7 @@ public class Course extends BaseName implements Comparable<ICourse>, ICourse {
     this.endDate = endDate;
   }
   
-  @JsonCreator
-  public Course(@JsonProperty("id")int id, 
-      @JsonProperty("name")String name, 
-      @JsonProperty("startDate")Calendar startDate, 
-      @JsonProperty("endDate")Calendar endDate) {
+  public Course(int id, String name, Calendar startDate, Calendar endDate) {
       super(id, name);
       this.startDate = startDate;
       this.endDate = endDate;

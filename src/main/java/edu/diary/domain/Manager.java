@@ -8,11 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Main entity for project. Class stores info about courses and it's modules. Has methods to manage
@@ -21,11 +16,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * 
  * @author Roma
  */
-@XmlRootElement(name = "manager")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Manager extends BaseName {
 
-  @XmlElement(type = Course.class, name = "courses")
+public class Manager extends BaseName {
   private Set<ICourse> courses = new TreeSet<>();
 
   public Manager() {

@@ -4,16 +4,12 @@ package edu.diary.domain;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.json.simple.parser.ParseException;
-
-
-
 /**
  * Created by Roma on 22.09.2015.
  */
 public class Diary {
 
-  public static void main(String[] args) throws IOException, ParseException, SQLException {
+  public static void main(String[] args) {
 
     Manager man = new Manager();
     man.setName("MANAGER");
@@ -37,7 +33,6 @@ public class Diary {
     course2.addModule(new Module(1, "Introducing to .Net",true, 50));
     course2.addModule(new Module(2, "Collections", false, 75));
     man.addCourse(course1).addCourse(course2);
-
 }
   }
 

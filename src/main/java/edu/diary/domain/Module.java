@@ -2,12 +2,6 @@ package edu.diary.domain;
 
 import java.util.Calendar;
 
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-
 /**
  * @author Roma class stores info about course modules
  */
@@ -26,7 +20,6 @@ public class Module extends BaseName implements Comparable<IModule>, IModule {
   /**
    * flag. shows passed/failed module
    */
-  @XmlTransient
   protected int userScore;
   
   protected boolean passed;
@@ -41,9 +34,7 @@ public class Module extends BaseName implements Comparable<IModule>, IModule {
     this.isEnabled = isEnabled;
     this.userScore = userScore;
   }
-  @JsonCreator
-  public Module(@JsonProperty("id")Integer id,
-                    @JsonProperty("name")String name) {
+  public Module(Integer id, String name) {
       super(id, name);
       
   }
