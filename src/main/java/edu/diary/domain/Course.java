@@ -1,35 +1,27 @@
 package edu.diary.domain;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Set;
 import java.util.TreeSet;
 
 <<<<<<< HEAD
 =======
+
+
+
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
 import edu.diary.util.DateUtils;
 
->>>>>>> 68f48dec2bcc935a0156c048061131b0e56044f2
-
 /**
  * @author Roma Representation of course and modules.
  */
-<<<<<<< HEAD
-//TODO:Comparable move in base
-public class Course extends AbstractUnit implements Comparable<Course> {
-  
 
-  
-  //TODO: maybe List? or something with order
-  private Set<Module> modules = new TreeSet<>();
-  
-  public Set<Module> getModules() {
-    return modules;
-  }
-
-  public Course addModule(Module aModule) {
-=======
 public class Course extends BaseName implements Comparable<Course>{
   
 
@@ -48,14 +40,14 @@ public class Course extends BaseName implements Comparable<Course>{
     
   public Course(Integer id, String name, 
           Calendar startDate, Calendar endDate) {
-    super(id, name);
+    super();
     this.startDate = startDate;
     this.endDate = endDate;
   }
   
   public Course(Integer id, String name, Calendar startDate, 
                     Calendar endDate, IModule...modules) {
-    super(id, name);
+    super();
     this.startDate = startDate;
     this.endDate = endDate;
   }
@@ -122,14 +114,12 @@ public Course(String name, String startDate, String endDate) {
    */
   
   public Course addModule(IModule aModule) {
->>>>>>> 68f48dec2bcc935a0156c048061131b0e56044f2
+
     modules.add(aModule);
     return this;
   }
 
-<<<<<<< HEAD
-  public int compareTo(Course other) {//ToDO maybe move to Base
-=======
+
   /**
    * @see edu.diary.domain.ICourse#formatDate(java.util.Calendar)
    */
@@ -143,7 +133,7 @@ public Course(String name, String startDate, String endDate) {
   
   @Override
   public int compareTo(Course other) {
->>>>>>> 68f48dec2bcc935a0156c048061131b0e56044f2
+
     return getId() - other.getId();
   }
 
