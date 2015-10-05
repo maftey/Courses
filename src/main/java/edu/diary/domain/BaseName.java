@@ -7,7 +7,7 @@ import java.text.DateFormat;
 
 /**
  * Class represents a <code>name</code> and is a superClass for all entities.
- * @author Roman Romaniuk 
+ * 
  */
 public abstract class BaseName extends Base {
   

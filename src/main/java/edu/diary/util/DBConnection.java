@@ -1,4 +1,3 @@
-
 package edu.diary.util;
 
 import java.sql.Connection;
@@ -8,12 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBConnection {
 	public static final Logger LOG = Logger.getLogger("DBconnection");
 	public static Connection conn = null;
+
 
 	public static Connection openConnection() {
 
@@ -22,8 +21,8 @@ public class DBConnection {
 			Class.forName("org.postgresql.Driver");
 			String databaseURL = "jdbc:postgresql://localhost:5432/courses";
 			Properties properties = new Properties();
-			properties.put("user", "postgres");
-			properties.put("password", "Qwerty1");
+			properties.put("user", "root");
+			properties.put("password", "root");
 			conn = DriverManager.getConnection(databaseURL, properties);
 			LOG.info("Database connection established successfully");
 		} catch (ClassNotFoundException e) {
@@ -74,6 +73,7 @@ public class DBConnection {
 			LOG.info("Cannot close" + e);
 		}
 	}
+
 
 	public static void close(ResultSet resultSet) {
 		try {
