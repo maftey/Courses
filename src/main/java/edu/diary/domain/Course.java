@@ -7,10 +7,6 @@ import java.util.GregorianCalendar;
 import java.util.Set;
 import java.util.TreeSet;
 
-<<<<<<< HEAD
-=======
-
-
 
 
 import javax.xml.bind.annotation.XmlElement;
@@ -33,7 +29,7 @@ public class Course extends BaseName implements Comparable<Course>{
 
   @XmlElementWrapper(name = "modules")
   @XmlElement(type = Module.class, name = "module")
-  private Set<IModule> modules = new TreeSet<>();
+  private Set<Module> modules = new TreeSet<>();
   
   public Course() {
   }
@@ -46,7 +42,7 @@ public class Course extends BaseName implements Comparable<Course>{
   }
   
   public Course(Integer id, String name, Calendar startDate, 
-                    Calendar endDate, IModule...modules) {
+                    Calendar endDate, Module...modules) {
     super();
     this.startDate = startDate;
     this.endDate = endDate;
@@ -105,7 +101,7 @@ public Course(String name, String startDate, String endDate) {
    * @see edu.diary.domain.ICourse#getModules()
    */
 
-  public Set<IModule> getModules() {
+  public Set<Module> getModules() {
     return modules;
   }
 
@@ -113,7 +109,7 @@ public Course(String name, String startDate, String endDate) {
    * @see edu.diary.domain.ICourse#addModule(edu.diary.domain.module.BaseModule)
    */
   
-  public Course addModule(IModule aModule) {
+  public Course addModule(Module aModule) {
 
     modules.add(aModule);
     return this;
@@ -124,7 +120,7 @@ public Course(String name, String startDate, String endDate) {
    * @see edu.diary.domain.ICourse#formatDate(java.util.Calendar)
    */
 
-    @Override
+   @Override
   public int compareTo(Course other) {
 
     return getId() - other.getId();
