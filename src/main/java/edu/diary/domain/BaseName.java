@@ -2,7 +2,7 @@ package edu.diary.domain;
 
 /**
  * Class represents a <code>name</code> and is a superClass for all entities.
- * @author Roman Romaniuk 
+ * 
  */
 public class BaseName extends Base {
   

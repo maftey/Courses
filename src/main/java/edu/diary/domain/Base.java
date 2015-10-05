@@ -48,11 +48,9 @@ public class Base {
     return id;
   }
   
-  public int isNew (){
-	  if(this.id==null){
-		  return 0;
-	  }
-	return 1;
+  public boolean isNew (){
+	  
+	return this.id==null;
 	 
 }
 

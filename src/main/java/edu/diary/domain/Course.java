@@ -46,7 +46,15 @@ public class Course extends BaseName implements Comparable<Course>{
     this.endDate = endDate;
   }
   
-   /**
+   public Course(int startSeq, String string, String string2, String string3) {
+	
+}
+
+public Course(String name, String startDate, String endDate) {
+
+}
+
+/**
    * @see edu.diary.domain.ICourse#getStartDate()
    */
  
@@ -126,7 +134,8 @@ public class Course extends BaseName implements Comparable<Course>{
            + " id= " + getId() 
            + ", name: " + getName() 
            + ", Start date: " + formatDate(getStartDate()) 
-           + ", End date: " + formatDate(getEndDate()); 
+           + ", End date: " + formatDate(getEndDate())
+           + " }"; 
   }
  
 }

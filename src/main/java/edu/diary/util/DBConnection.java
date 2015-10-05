@@ -14,7 +14,7 @@ public class DBConnection {
 	public static final Logger LOG = Logger.getLogger("DBconnection");
 	public static Connection conn = null;
 
-	public static synchronized Connection openConnection() {
+	public static  Connection openConnection() {
 
 		try {
 
@@ -37,21 +37,22 @@ public class DBConnection {
 			LOG.info("Error: unable to set database driver! ");
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			e.printStackTrace();
-			System.exit(1);
 		} catch (Exception e) {
 			LOG.info("Cannot open datbase");
 			
 			e.printStackTrace();
 		}
-		System.exit(0);
 		return null;
 	}
 
 	public static synchronized void closeConnection() {
 		try {
-			conn.close();
+			if (conn != null) {
+				conn.close();
+				LOG.info("Connection closed");
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.info("Cannot closed" + e);
 		}
 	}
 
@@ -59,9 +60,10 @@ public class DBConnection {
 		try {
 			if (statement != null) {
 				statement.close();
+				LOG.info("Statement closed");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.info("Cannot close" + e);
 		}
 	}
 
@@ -69,9 +71,10 @@ public class DBConnection {
 		try {
 			if (preparedStatement != null) {
 				preparedStatement.close();
+				LOG.info("PreparedStatement closed");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.info("Cannot close" + e);
 		}
 	}
 
@@ -79,9 +82,10 @@ public class DBConnection {
 		try {
 			if (resultSet != null) {
 				resultSet.close();
+				LOG.info("ResultSet closed");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.info("Cannot close" + e);
 		}
 	}
 }

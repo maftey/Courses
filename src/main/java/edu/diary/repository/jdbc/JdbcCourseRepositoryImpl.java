@@ -1,3 +1,4 @@
+
 package edu.diary.repository.jdbc;
 
 import java.sql.Connection;
@@ -7,87 +8,84 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import edu.diary.domain.Course;
 import edu.diary.repository.CourseRepository;
 import edu.diary.util.DBConnection;
 import edu.diary.util.DateUtils;
+import static edu.diary.util.DBConnection.conn;
 
 public class JdbcCourseRepositoryImpl implements CourseRepository {
-	private static Logger LOG = Logger.getLogger("JdbcCourseRepository");
-	private Connection conn = null;
-
+	private static Logger LOG = Logger.getLogger("JdbcCourseRepository"); 
+	Connection conn = DBConnection.openConnection();
+	PreparedStatement preparedStatement = null;
 	@Override
 	public Course save(Course course) {
-		String insert = "INSERT INTO courses (name, startDate, endDate) "
-					  + "VALUES (?, ?, ?)";
-		String update = "UPDATE INTO courses (name, startDate, endDate) "
-					  + "VALUES (?, ?, ?)";
-		PreparedStatement preparedStatement = null;
 		conn = DBConnection.openConnection();
-		
-//		checking. if id = null then INSERT
-		
-		switch (course.isNew()) {
-
-		case 0:
-			try {
-				preparedStatement = conn.prepareStatement(insert);
-				preparedStatement.setString(1, course.getName());
-				preparedStatement.setDate(2,
-						(DateUtils.utilDateToSqlDate(course.getStartDate())));
-				preparedStatement.setDate(3,
-						(DateUtils.utilDateToSqlDate(course.getEndDate())));
-				int rows = preparedStatement.executeUpdate();
-				preparedStatement.clearParameters();
-				if (rows > 0) {
-					LOG.info("Record is inserted into courses table" + course);
-				}
-			} catch (SQLException e) {
-				LOG.info("INSERT FAILED:" + e);
-
-			} finally {
-				DBConnection.close(preparedStatement);
-				DBConnection.closeConnection();
+		LOG.setLevel(Level.ALL);
+		String insert = "INSERT INTO courses (name, startDate, endDate) "
+				+ "VALUES (?, ?, ?)";
+		try {
+			
+			preparedStatement = conn.prepareStatement(insert);
+			preparedStatement.setString(1, course.getName());
+			preparedStatement.setDate(2,
+					(DateUtils.utilDateToSqlDate(course.getStartDate())));
+			preparedStatement.setDate(3,
+					(DateUtils.utilDateToSqlDate(course.getEndDate())));
+			int rows = preparedStatement.executeUpdate();
+			preparedStatement.clearParameters();
+			if (rows > 0) {
+				LOG.info("Record is inserted into courses table. Rows =  "
+						+ rows);
+				System.out.println(rows);
 			}
-
-			break;
-
-		// checking. if id!=null then UPDATE
-		case 1:
-			try {
-				preparedStatement = conn.prepareStatement(insert);
-				preparedStatement.setString(1, course.getName());
-				preparedStatement.setDate(2,
-						(DateUtils.utilDateToSqlDate(course.getStartDate())));
-				preparedStatement.setDate(3,
-						(DateUtils.utilDateToSqlDate(course.getEndDate())));
-				int rows = preparedStatement.executeUpdate();
-				preparedStatement.clearParameters();
-				if (rows > 0) {
-					LOG.info("Record is UPDATED into courses table" + course);
-				}
-			} catch (SQLException e) {
-				LOG.info("UPDATED FAILED:" + e);
-
-			} finally {
-				DBConnection.close(preparedStatement);
-				DBConnection.closeConnection();
-			}
-
-			break;
+			DBConnection.close(preparedStatement);
+			DBConnection.closeConnection();
+		} catch (SQLException e) {
+			LOG.info("INSERT FAILED: " + e);
+		} finally {
+			DBConnection.closeConnection();
 		}
 		return course;
 	}
 
 	@Override
+	public Course update(Course course) {
+		conn = DBConnection.openConnection();
+		String update = "UPDATE INTO courses (name, startDate, endDate) "
+				+ "VALUES (?, ?, ?)";
+		try {
+			Connection conn = DBConnection.openConnection();
+			PreparedStatement preparedStatement = null;
+			preparedStatement = conn.prepareStatement(update);
+			preparedStatement.setString(1, course.getName());
+			preparedStatement.setDate(2,
+					(DateUtils.utilDateToSqlDate(course.getStartDate())));
+			preparedStatement.setDate(3,
+					(DateUtils.utilDateToSqlDate(course.getEndDate())));
+			int rows = preparedStatement.executeUpdate();
+			preparedStatement.clearParameters();
+			if (rows > 0) {
+				LOG.info("Record is UPDATED into courses table" + course);
+			}
+			DBConnection.close(preparedStatement);
+		} catch (SQLException e) {
+			LOG.info("UPDATED FAILED:" + e);
+		} finally {
+			DBConnection.closeConnection();
+		}
+		return course;
+	}
+// ==================================================================================================================================
+	@Override
 	public void delete(int id) {
 		String delete = "DELETE FROM courses WHERE courses.id = ?";
-		PreparedStatement preparedStatement = null;
-		conn = DBConnection.openConnection();
+
 		try {
-			conn = DBConnection.openConnection();
+			PreparedStatement preparedStatement = null;
 			preparedStatement = conn.prepareStatement(delete);
 			preparedStatement.setInt(1, id);
 			int rows = preparedStatement.executeUpdate();
@@ -97,10 +95,10 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 				LOG.info("no record in database with specified id = " + id);
 			}
 			preparedStatement.clearParameters();
+			DBConnection.close(preparedStatement);
 		} catch (SQLException e) {
 			LOG.info("DELETE FAILED:" + e);
 		} finally {
-			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
 		}
 	}
@@ -108,14 +106,13 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 	@Override
 	public Course get(int id) {
 		String getCourse = "SELECT courses.id, courses.name FROM courses "
-						 + "WHERE courses.id = ?";
-		PreparedStatement preparedStatement = null;
-		conn = DBConnection.openConnection();
+				+ "WHERE courses.id = ?";
 		Course course = new Course();
-		ResultSet resultSet = null;
-		Statement statement = null;
-		conn = DBConnection.openConnection();
+		 conn = DBConnection.openConnection();
 		try {
+			Connection conn = DBConnection.openConnection();
+			ResultSet resultSet = null;
+			PreparedStatement preparedStatement = null;
 			preparedStatement = conn.prepareStatement(getCourse);
 			preparedStatement.setInt(1, id);
 			resultSet = preparedStatement.executeQuery();
@@ -126,11 +123,11 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 				course.setName(resultSet.getString("name"));
 			}
 			LOG.info("Record got from courses table " + course);
-		} catch (SQLException e) {
-			LOG.info("Cannot read from DB " + e);
-		} finally {
 			DBConnection.close(resultSet);
-			DBConnection.close(statement);
+		} catch (SQLException e) {
+
+			LOG.info("Cannot get entry from DB " + e);
+		} finally {
 			DBConnection.closeConnection();
 		}
 		return course;
@@ -141,10 +138,11 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 		Set<Course> courses = new TreeSet<>();
 		conn = DBConnection.openConnection();
 		String getAll = "SELECT * FROM courses";
-		ResultSet resultSet = null;
-		Statement statement = null;
-		conn = DBConnection.openConnection();
 		try {
+			conn = DBConnection.openConnection();
+			ResultSet resultSet = null;
+			Statement statement = null;
+		
 			statement = conn.createStatement();
 			resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
@@ -159,11 +157,12 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 				}
 			}
 			LOG.info("all courses  from courses table: " + courses);
+			DBConnection.close(resultSet);
+			DBConnection.close(statement);
+			DBConnection.closeConnection();
 		} catch (SQLException e) {
 			LOG.info("Cannot read from DB " + e);
 		} finally {
-			DBConnection.close(resultSet);
-			DBConnection.close(statement);
 			DBConnection.closeConnection();
 		}
 		return courses;
@@ -172,9 +171,9 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 	@Override
 	public void deleteAll() {
 		String deleteAll = "DELETE FROM courses";
-		PreparedStatement preparedStatement = null;
-		conn = DBConnection.openConnection();
+		
 		try {
+			PreparedStatement preparedStatement = null;
 			preparedStatement = conn.prepareStatement(deleteAll);
 			int rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
@@ -183,10 +182,11 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 				LOG.info("DELETE FAILED ");
 			}
 			preparedStatement.clearParameters();
+			DBConnection.close(preparedStatement);
+			DBConnection.closeConnection();
 		} catch (SQLException e) {
 			LOG.info("DELETE FAILED:" + e);
 		} finally {
-			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
 		}
 	}

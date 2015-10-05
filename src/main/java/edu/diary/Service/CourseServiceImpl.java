@@ -3,7 +3,7 @@ package edu.diary.Service;
 
 import java.util.Set;
 
-import edu.diary.domain.ICourse;
+import edu.diary.domain.Course;
 import edu.diary.repository.CourseRepository;
 
 public class CourseServiceImpl implements CourseRepository {
@@ -11,7 +11,7 @@ public class CourseServiceImpl implements CourseRepository {
   private CourseRepository courseRepository = new CourseServiceImpl();
 
   @Override
-  public ICourse save(ICourse course) {
+  public Course save(Course course) {
     return null;
   }
 
@@ -20,12 +20,12 @@ public class CourseServiceImpl implements CourseRepository {
   }
   
   @Override
-  public ICourse get(int id) {
+  public Course get(int id) {
     return null;
   }
 
   @Override
-  public Set<ICourse> getAll() {
+  public Set<Course> getAll() {
    
     return null;
   }
@@ -33,6 +33,12 @@ public class CourseServiceImpl implements CourseRepository {
   @Override
   public void deleteAll() {
   }
+
+@Override
+public Course update(Course course) {
+	// TODO Auto-generated method stub
+	return null;
+}
 
 
 }  

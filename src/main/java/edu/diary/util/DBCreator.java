@@ -6,9 +6,7 @@ import java.util.logging.Logger;
 
 public class DBCreator {
 private static Logger LOG = Logger.getLogger("DBCreator"); 
-  public DBCreator() { }
  
-
   public void createDB() {
     Connection conn = DBConnection.openConnection();
 //    SqlParser parser = new SqlParser();
@@ -32,8 +30,7 @@ private static Logger LOG = Logger.getLogger("DBCreator");
      DBConnection.close(stmt);
      DBConnection.closeConnection();
     } catch (Exception e) {
-    	LOG.info("Tables didn't created!" + e);
-      System.exit(0);
+    	LOG.info("Tables didn't created! " + e);
     }
    }
 }
