@@ -18,7 +18,7 @@ import java.util.TreeSet;
  */
 
 public class Manager extends BaseName {
-  private Set<ICourse> courses = new TreeSet<>();
+  private Set<Course> courses = new TreeSet<>();
 
   public Manager() {
   }
@@ -27,18 +27,18 @@ public class Manager extends BaseName {
     super();
   }
 
-  public Set<ICourse> getCourses() {
+  public Set<Course> getCourses() {
     return courses;
   }
 
-  public Manager addCourse(ICourse aCourse) {
+  public Manager addCourse(Course aCourse) {
     courses.add(aCourse);
     return this;
   }
 
-  public void showEnabledModules(ICourse aCourse, boolean variable) {
-    Set<IModule> enabledModules = new TreeSet<>();
-    for (IModule module : aCourse.getModules()) {
+  public void showEnabledModules(Course aCourse, boolean variable) {
+    Set<Module> enabledModules = new TreeSet<>();
+    for (Module module : aCourse.getModules()) {
       if (module.isEnabled()) {
         enabledModules.add(module);
       } 
@@ -46,17 +46,17 @@ public class Manager extends BaseName {
     System.out.println(enabledModules);
   }
 
-  public void showCoursesStartNextWeek(Set<ICourse> aCourses) {
+  public void showCoursesStartNextWeek(Set<Course> aCourses) {
 
     Calendar gCalendar = new GregorianCalendar();
 
-    Set<ICourse> nextWeekCourses = new TreeSet<>();
+    Set<Course> nextWeekCourses = new TreeSet<>();
 
     int today = gCalendar.get(Calendar.DAY_OF_MONTH);
     int month = gCalendar.get(Calendar.MONTH);
     int year = gCalendar.get(Calendar.YEAR);
 
-    for (ICourse course : aCourses) {
+    for (Course course : aCourses) {
 
       Calendar cal = new GregorianCalendar();
       cal = (Calendar) course.getStartDate();

@@ -3,13 +3,13 @@ package edu.diary.repository.jdbc;
 
 import java.util.Set;
 
-import edu.diary.domain.ICourse;
+import edu.diary.domain.Course;
 import edu.diary.repository.CourseRepository;
 
 public class JdbcCourseRepositoryImpl implements CourseRepository {
 
   @Override
-  public ICourse save(ICourse course) {
+  public Course save(Course course) {
         
     return null;
   }
@@ -20,13 +20,13 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
   
 
   @Override
-  public ICourse get(int id) {
+  public Course get(int id) {
    
     return null;
   }
 
   @Override
-  public Set<ICourse> getAll() {
+  public Set<Course> getAll() {
    
     return null;
   }

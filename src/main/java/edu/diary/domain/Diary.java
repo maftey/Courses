@@ -14,7 +14,7 @@ public class Diary {
     Manager man = new Manager();
     man.setName("MANAGER");
     
-    ICourse course1 = new Course();
+    Course course1 = new Course();
     course1.setId(1);
     course1.setName("JAVA.Basics");
     course1.setStartDate(7, 10, 2015);
@@ -25,7 +25,7 @@ public class Diary {
     course1.addModule(new Module(4, "Interfaces and nested classes", false, 75));
     course1.addModule(new Module(5, "Generics", false, 75 ));
     
-    ICourse course2 = new Course();
+    Course course2 = new Course();
     course2.setId(2);
     course2.setName("DotNet for beginners");
     course2.setStartDate(1,10,2015);

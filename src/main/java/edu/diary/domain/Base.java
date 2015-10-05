@@ -4,25 +4,17 @@ package edu.diary.domain;
  * @author Roman Romaniuk Class is a superClass for all entities.
  */
 
-public class Base {
+public abstract class Base {
 
   /**
    *  used for start sequence for entities id's (for test purposes only)
    */
-  public static final int START_SEQ = 1;
+  public static final int START_SEQ = 1;//TODO: for test? delete
 
   /**
    * id of all inherited classes
    */
-  private Integer id;
-
-  public Base() {
-  }
-
- 
-  public Base(Integer id) {
-    this.id = id;
-  }
+  private Integer id;//TODO: why not just int?
   
   /**
    * method sets id

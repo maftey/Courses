@@ -2,12 +2,12 @@
 package edu.diary.domain;
 
 import javax.xml.bind.annotation.XmlElement;
-
+//TODO: add name, login ...
 /**
  * @author Roma Stores information about users
  */
 
-public class User extends BaseName {
+public class User /*extends BaseName*/ {
 
   @XmlElement(name = "lastname")
   private String lastName = null;
@@ -21,7 +21,7 @@ public class User extends BaseName {
   }
 
   public User(Integer id, String name, String lastName) {
-    super(id, name);
+    //super(id, name);
     this.lastName = lastName;
   }
 
@@ -54,8 +54,8 @@ public class User extends BaseName {
 
   public String toString() {
     return "User{" 
-            + "id= " + getId() 
-        + ", name: " + getName() 
+        //    + "id= " + getId() 
+        //+ ", name: " + getName() 
         + ", lastname: " + getLastName();
   }
 }
