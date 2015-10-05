@@ -17,11 +17,9 @@ import java.util.TreeSet;
  * @author Roma
  */
 
-<<<<<<< HEAD
+
 public class Manager extends BaseName {
-=======
-  @XmlElement(type = Course.class, name = "courses")
->>>>>>> 68f48dec2bcc935a0156c048061131b0e56044f2
+
   private Set<Course> courses = new TreeSet<>();
 
   public Manager() {
@@ -41,13 +39,9 @@ public class Manager extends BaseName {
   }
 
   public void showEnabledModules(Course aCourse, boolean variable) {
-<<<<<<< HEAD
+
     Set<Module> enabledModules = new TreeSet<>();
     for (Module module : aCourse.getModules()) {
-=======
-    Set<IModule> enabledModules = new TreeSet<>();
-    for (IModule module : aCourse.getModules()) {
->>>>>>> 68f48dec2bcc935a0156c048061131b0e56044f2
       if (module.isEnabled()) {
         enabledModules.add(module);
       } 
