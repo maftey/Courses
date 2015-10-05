@@ -1,6 +1,6 @@
 import edu.diary.domain.Base;
 import edu.diary.domain.Course;
-import edu.diary.util.DBCreator;
+import edu.diary.util.TablesCreator;
 
 
 public class TestData extends Course{
