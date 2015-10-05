@@ -6,7 +6,7 @@ import edu.diary.domain.Course;
 
 public interface CourseRepository {
   
-  // Course course = null. if id!=null -> update
+  
   Course save(Course course);
 
   //    false if not found
@@ -18,5 +18,7 @@ public interface CourseRepository {
   Set<Course> getAll();
 
   void deleteAll();
+
+Course update(Course course);
 
 }

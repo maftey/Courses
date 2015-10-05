@@ -1,8 +1,6 @@
 DROP TABLE IF EXISTS modules;
 DROP TABLE IF EXISTS courses;
 DROP SEQUENCE IF EXISTS global_seq;
--- DROP DATABASE IF EXISTS courses;
--- CREATE DATABASE IF NOT EXISTS courses;
 
 CREATE SEQUENCE global_seq START 1;
 
@@ -13,7 +11,6 @@ CREATE TABLE courses
   startDate DATE NOT NULL,
   endDate  	DATE NOT NULL 
 );
---CREATE UNIQUE INDEX unique_name ON courses (name);
 
 CREATE TABLE modules (
   id         INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -22,7 +19,5 @@ CREATE TABLE modules (
   isEnabled	 BOOLEAN,
   passed	 BOOLEAN,
   passingScore INTEGER,
-  FOREIGN KEY (course_id) REFERENCES courses (id) ON DELETE RESTRICT
-  
---  question with ON DELETE is to be solved.
+  FOREIGN KEY (course_id) REFERENCES courses (id) ON DELETE CASCADE
 );

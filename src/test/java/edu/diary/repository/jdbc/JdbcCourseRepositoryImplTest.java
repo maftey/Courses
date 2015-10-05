@@ -1,17 +1,14 @@
 package edu.diary.repository.jdbc;
 
 import org.testng.annotations.Test;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.BeforeSuite;
+
+import edu.diary.domain.Course;
+import edu.diary.repository.CourseRepository;
 
 public class JdbcCourseRepositoryImplTest {
-//@Parameters({"org.postgresql.Driver","jdbc:postgresql://localhost:5432/courses","user","user"})
-//@BeforeClass
-//public void setUpDriverManager(int driver,String url, String username , String password) throws SQLException {
-//  Connection conn =  DriverManager.getConnection(url, username, password);
-//}
+	CourseRepository courseRepository = new JdbcCourseRepositoryImpl();
   
-  
+ 
   @Test
   public void delete() {
     throw new RuntimeException("Test not implemented");
@@ -34,6 +31,15 @@ public class JdbcCourseRepositoryImplTest {
 
   @Test
   public void save() {
+	 final  Course COURSE = new Course("JAVA.Basics", "12.4/2016","04.05.2016");
+	 Course createdCourse = courseRepository.save(COURSE);
+	 
+	 
+	  
+  }
+
+  @Test
+  public void update() {
     throw new RuntimeException("Test not implemented");
   }
 }

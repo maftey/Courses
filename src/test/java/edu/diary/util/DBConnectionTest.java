@@ -18,7 +18,7 @@ public class DBConnectionTest {
   public void openConnectionTest() throws SQLException {
     Connection conn = null;
     conn = DBConnection.openConnection();
-    assertEquals(conn == null, true);
+    assertEquals(conn != null, true);
     conn.close();
   }
  
