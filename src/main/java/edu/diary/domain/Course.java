@@ -124,14 +124,7 @@ public Course(String name, String startDate, String endDate) {
    * @see edu.diary.domain.ICourse#formatDate(java.util.Calendar)
    */
 
-  
-  public String formatDate(Calendar unformattedDate) {
-    Date date = unformattedDate.getTime();
-    DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
-    return (String) dateFormat.format(date);
-  }
-  
-  @Override
+    @Override
   public int compareTo(Course other) {
 
     return getId() - other.getId();

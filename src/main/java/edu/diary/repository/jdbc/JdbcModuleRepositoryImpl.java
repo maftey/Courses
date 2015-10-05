@@ -17,7 +17,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository{
 	PreparedStatement ps = null;
 
 	@Override
-	public IModule save(IModule module) {
+	public IModule save(Module module) {
 		String inserUser = "INSERT INTO modules ";
 //		PreparedStatement ps = conn.prepareStatement();
 		
