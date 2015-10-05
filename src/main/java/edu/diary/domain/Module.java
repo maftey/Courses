@@ -1,8 +1,8 @@
 package edu.diary.domain;
 
-import java.util.Calendar;
 import java.util.Set;
 import java.util.TreeSet;
+
 
 /**
  * @author Roma class stores info about course modules

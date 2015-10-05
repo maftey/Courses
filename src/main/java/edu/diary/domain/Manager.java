@@ -17,7 +17,9 @@ import java.util.TreeSet;
  * @author Roma
  */
 
+
 public class Manager extends BaseName {
+
   private Set<Course> courses = new TreeSet<>();
 
   public Manager() {
@@ -37,6 +39,7 @@ public class Manager extends BaseName {
   }
 
   public void showEnabledModules(Course aCourse, boolean variable) {
+
     Set<Module> enabledModules = new TreeSet<>();
     for (Module module : aCourse.getModules()) {
       if (module.isEnabled()) {

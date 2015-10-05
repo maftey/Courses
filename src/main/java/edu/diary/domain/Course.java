@@ -31,11 +31,11 @@ public class Course extends AbstractUnit implements Comparable<Course> {
   @Override
   public String toString() {
     return "Course{" 
-           + "id= " + getId() 
+           + " id= " + getId() 
            + ", name: " + getName() 
            + ", Start date: " + formatDate(getStartDate()) 
-           + ", End date: " + formatDate(getEndDate()) 
-           + ", modules: " + getModules();
+           + ", End date: " + formatDate(getEndDate())
+           + " }"; 
   }
  
 }
