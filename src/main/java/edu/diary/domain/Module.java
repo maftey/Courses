@@ -1,11 +1,6 @@
 package edu.diary.domain;
 
-import java.util.Calendar;
-
 import javax.xml.bind.annotation.XmlTransient;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
@@ -41,12 +36,7 @@ public class Module extends BaseName implements Comparable<IModule>, IModule {
     this.isEnabled = isEnabled;
     this.userScore = userScore;
   }
-  @JsonCreator
-  public Module(@JsonProperty("id")Integer id,
-                    @JsonProperty("name")String name) {
-      super(id, name);
-      
-  }
+  
   
   /* 
    * @see edu.diary.domain.ModuleInterface#isEnabled()

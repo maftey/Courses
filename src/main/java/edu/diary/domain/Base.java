@@ -1,21 +1,15 @@
 package edu.diary.domain;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
 /**
  * @author Roman Romaniuk Class is a superClass for all entities.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE,
-isGetterVisibility = NONE, setterVisibility = NONE)
+
 public class Base {
 
   /**
@@ -54,8 +48,12 @@ public class Base {
     return id;
   }
   
-  public boolean isNew (){
-    return (this.id==null);
+  public int isNew (){
+	  if(this.id==null){
+		  return 0;
+	  }
+	return 1;
+	 
 }
 
   @Override

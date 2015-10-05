@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 
 public class SqlParser {
-  public static void main(String[] args) {
-    
-  }
+ 
     private String sqlQuery;
   
     public String parseSqlFile() {

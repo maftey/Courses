@@ -10,14 +10,13 @@ import java.util.TreeSet;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.diary.util.DateUtils;
 
 
 /**
  * @author Roma Representation of course and modules.
  */
-public class Course extends BaseName implements Comparable<ICourse>, ICourse {
+public class Course extends BaseName implements Comparable<Course>{
   
 
   @XmlElement(name = "startDate")
@@ -32,8 +31,7 @@ public class Course extends BaseName implements Comparable<ICourse>, ICourse {
   
   public Course() {
   }
-  
-  
+    
   public Course(Integer id, String name, 
           Calendar startDate, Calendar endDate) {
     super(id, name);
@@ -48,20 +46,10 @@ public class Course extends BaseName implements Comparable<ICourse>, ICourse {
     this.endDate = endDate;
   }
   
-  @JsonCreator
-  public Course(@JsonProperty("id")int id, 
-      @JsonProperty("name")String name, 
-      @JsonProperty("startDate")Calendar startDate, 
-      @JsonProperty("endDate")Calendar endDate) {
-      super(id, name);
-      this.startDate = startDate;
-      this.endDate = endDate;
-  }
-
-  /**
+   /**
    * @see edu.diary.domain.ICourse#getStartDate()
    */
-  @Override
+ 
   public Calendar getStartDate() {
     return startDate;
   }
@@ -69,7 +57,7 @@ public class Course extends BaseName implements Comparable<ICourse>, ICourse {
   /**
    * @see edu.diary.domain.ICourse#getEndDate()
    */
-  @Override
+ 
   public Calendar getEndDate() {
     return endDate;
   }
@@ -78,36 +66,31 @@ public class Course extends BaseName implements Comparable<ICourse>, ICourse {
    System.out.println(formatDate(startDate));
   }
   /**
-   * @see edu.diary.domain.ICourse#setStartDate(int, int, int)
+   * @see edu.diary.domain.ICourse#setStartDate(String date)
    */
-  @Override
-  public void setStartDate(int day, int month, int year) {
-//    startDate = new GregorianCalendar(year, month, day);
   
-    startDate.set(Calendar.DAY_OF_MONTH, day);
-    startDate.set(Calendar.MONTH, (month-1));
-    startDate.set(Calendar.YEAR, year);
-    
+  public void setStartDate(String ddmmyyyy) {
+	  String day_month_year = ddmmyyyy;
+	  startDate = DateUtils.convertFromDMY(day_month_year);
   }
 
+  
   /**
    * 
    * 
-   * @see edu.diary.domain.ICourse#setEndDate(int, int, int)
+   * @see edu.diary.domain.ICourse#setEndDate((String date)
    */
-  @Override
-  public void setEndDate(int day, int month, int year) {
 
-    endDate.set(Calendar.DAY_OF_MONTH, day);
-    endDate.set(Calendar.MONTH, (month-1));
-    endDate.set(Calendar.YEAR, year);
+  public void setEndDate(String ddmmyyyy) {
+	  String day_month_year = ddmmyyyy;
+	  endDate = DateUtils.convertFromDMY(day_month_year);
   }
 
   
   /**
    * @see edu.diary.domain.ICourse#getModules()
    */
-  @Override
+
   public Set<IModule> getModules() {
     return modules;
   }
@@ -115,8 +98,8 @@ public class Course extends BaseName implements Comparable<ICourse>, ICourse {
   /**
    * @see edu.diary.domain.ICourse#addModule(edu.diary.domain.module.BaseModule)
    */
-  @Override
-  public ICourse addModule(IModule aModule) {
+  
+  public Course addModule(IModule aModule) {
     modules.add(aModule);
     return this;
   }
@@ -125,7 +108,7 @@ public class Course extends BaseName implements Comparable<ICourse>, ICourse {
    * @see edu.diary.domain.ICourse#formatDate(java.util.Calendar)
    */
 
-  @Override
+  
   public String formatDate(Calendar unformattedDate) {
     Date date = unformattedDate.getTime();
     DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
@@ -133,18 +116,17 @@ public class Course extends BaseName implements Comparable<ICourse>, ICourse {
   }
   
   @Override
-  public int compareTo(ICourse other) {
+  public int compareTo(Course other) {
     return getId() - other.getId();
   }
 
   @Override
   public String toString() {
     return "Course{" 
-           + "id= " + getId() 
+           + " id= " + getId() 
            + ", name: " + getName() 
            + ", Start date: " + formatDate(getStartDate()) 
-           + ", End date: " + formatDate(getEndDate()) 
-           + ", modules: " + getModules();
+           + ", End date: " + formatDate(getEndDate()); 
   }
  
 }
