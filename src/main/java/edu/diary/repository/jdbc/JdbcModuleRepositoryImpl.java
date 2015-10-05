@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Set;
 
-import edu.diary.domain.IModule;
+import edu.diary.domain.Module;
 import edu.diary.repository.ModuleRepository;
 
 public class JdbcModuleRepositoryImpl implements ModuleRepository{
@@ -17,7 +17,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository{
 	PreparedStatement ps = null;
 
 	@Override
-	public IModule save(Module module) {
+	public Module save(Module module) {
 		String inserUser = "INSERT INTO modules ";
 //		PreparedStatement ps = conn.prepareStatement();
 		
@@ -36,13 +36,13 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository{
 	}
 
 	@Override
-	public IModule get(int id) {
+	public Module get(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Set<IModule> getAll() {
+	public Set<Module> getAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

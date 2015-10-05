@@ -1,16 +1,10 @@
 package edu.diary.domain;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-
 /**
  * @author Roman Romaniuk Class is a superClass for all entities.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 
-public class Base {
+public abstract class Base {
 
   /**
    *  used for start sequence for entities id's (for test purposes only)
