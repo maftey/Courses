@@ -11,7 +11,7 @@ public class TablesCreator {
 
 		try {
 			Connection conn = DBConnection.openConnection();
-			String sql = "DROP TABLE IF EXISTS questions; "
+			String initDB = "DROP TABLE IF EXISTS questions; "
 					+ "DROP TABLE IF EXISTS lessons; "
 					+ "DROP TABLE IF EXISTS tests; "
 					+ "DROP TABLE IF EXISTS modules; "
@@ -66,7 +66,7 @@ public class TablesCreator {
 					+ "FOREIGN KEY (test_id) REFERENCES tests (id) ON DELETE CASCADE "
 					+ ");";
 			Statement stmt = conn.createStatement();
-			int rows = stmt.executeUpdate(sql);
+			int rows = stmt.executeUpdate(initDB);
 			if (rows > 0) {
 				LOG.info("Tables created successfully");
 			}
@@ -75,5 +75,20 @@ public class TablesCreator {
 		} catch (Exception e) {
 			LOG.info("Tables didn't created! " + e);
 		}
+	}
+	public void populateDB(){
+		Connection conn = DBConnection.openConnection();
+		String DBPopulator ="";
+		Statement stmt = conn.createStatement();
+		int rows = stmt.executeUpdate(DBPopulator);
+		if (rows > 0) {
+			LOG.info("entries inserted successfully!");
+		}
+		DBConnection.close(stmt);
+		DBConnection.closeConnection();
+	} catch (Exception e) {
+		LOG.info("Entries didn't inserted! " + e);
+	}
+		
 	}
 }
