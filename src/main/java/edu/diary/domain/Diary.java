@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 
 import edu.diary.repository.CourseRepository;
 import edu.diary.repository.jdbc.JdbcCourseRepositoryImpl;
-import edu.diary.util.DBInitialisator;
+import edu.diary.repository.jdbc.JdbcModuleRepositoryImpl;
+import edu.diary.util.TablesCreator;
+import edu.diary.util.TestCourseData;
 
 /**
  * Created by Roma on 22.09.2015.
@@ -21,9 +23,9 @@ public class Diary {
 		LOG.setLevel(Level.ALL);
 
 		// repository inintialisation
-		CourseRepository repository = new JdbcCourseRepositoryImpl();
-		
-		DBInitialisator.resetDatabase();
+
+		JdbcCourseRepositoryImpl courseRep = new JdbcCourseRepositoryImpl();
+		JdbcModuleRepositoryImpl moduleRep = new JdbcModuleRepositoryImpl();
 
 		// creating tables in database
 //		 TablesCreator dbCreator = new TablesCreator();
@@ -40,10 +42,17 @@ public class Diary {
 //		 repository.get("JAVA.NEW");
 //		 repository.update(TestCourseData.testJavaCourse());
 		
-//		// repository.save(course2);
-//		  Set<Course> set = new TreeSet<>();
-//				  set = repository.getAll();
-//		 System.out.println(set);
+		// repository.save(course2);
+		Set<Course> courseSet = courseRep.getAll();
+        for(Course course: courseSet){
+        	System.out.println(course);
+        	Set<Module> mosuleSet = moduleRep.getAllForCourse(course);
+        	for(Module module: mosuleSet){
+        		System.out.println(module);
+        	}
+        }
+				  
+		 //System.out.println(set);
 		// repository.get(1);
 		// repository.delete(1);
 		// repository.deleteAll();

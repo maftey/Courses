@@ -129,16 +129,16 @@ public class LessonRepositoryImpl implements LessonRepository {
 					.prepareStatement(getCourse);
 			preparedStatement.setString(1, name);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				lesson.setId(resultSet.getInt("id"));
-				lesson.setName(resultSet.getString("name"));
-				lesson.setStartDate(DateUtils.sqlDateToCalendar(resultSet
-						.getDate("startdate")));
-				lesson.setEndDate(DateUtils.sqlDateToCalendar(resultSet
-						.getDate("endDate")));
-				lesson.setEnabled(resultSet.getBoolean("isenabled"));
-				lesson.setDescription(resultSet.getString("description"));
-			}
+			resultSet.next() ;
+			lesson.setId(resultSet.getInt("id"));
+			lesson.setName(resultSet.getString("name"));
+			lesson.setStartDate(DateUtils.sqlDateToCalendar(resultSet
+				.getDate("startdate")));
+			lesson.setEndDate(DateUtils.sqlDateToCalendar(resultSet
+				.getDate("endDate")));
+			lesson.setEnabled(resultSet.getBoolean("isenabled"));
+			lesson.setDescription(resultSet.getString("description"));
+			
 			logger.info("Record got from lessons table " + lesson);
 			DBConnection.close(resultSet);
 			DBConnection.close(preparedStatement);
@@ -153,7 +153,7 @@ public class LessonRepositoryImpl implements LessonRepository {
 	@Override
 	public Set<Lesson> getAll() {
 		Set<Lesson> lessons = new TreeSet<>();
-		Lesson lesson = new Lesson();
+		
 		String getAll = "SELECT * FROM lessons";
 		try {
 			Connection conn = DBConnection.openConnection();
@@ -161,6 +161,8 @@ public class LessonRepositoryImpl implements LessonRepository {
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
+				Lesson lesson = new Lesson();
+				lesson.setId(resultSet.getInt("id"));
 				lesson.setName(resultSet.getString("name"));
 				lesson.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startDate")));
@@ -180,9 +182,10 @@ public class LessonRepositoryImpl implements LessonRepository {
 	
 	public Set<Lesson> getAllForModule(Module module) {
 		Set<Lesson> lessons = new TreeSet<>();
-		Lesson lesson = new Lesson();
+		
 		String getAll = "SELECT * FROM lessons WHERE module_id = ?";
 		try {
+			
 			Connection conn = DBConnection.openConnection();
 			conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn
@@ -190,6 +193,7 @@ public class LessonRepositoryImpl implements LessonRepository {
 			preparedStatement.setInt(1, module.getId());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
+				Lesson lesson = new Lesson();
 				lesson.setName(resultSet.getString("name"));
 				lesson.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startDate")));
