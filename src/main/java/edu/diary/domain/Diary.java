@@ -47,13 +47,7 @@ public class Diary {
 		// repository.delete(1);
 		// repository.deleteAll();
 		// repository.getAll();
-		// Set<Course> courses = new TreeSet<>();
-		// courses = repository.getAll();
-		//
-		// for (Course c : courses){
-		// System.out.println(c);
-		// }
-		//
+		
 
 	}
 }
