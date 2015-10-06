@@ -14,7 +14,8 @@ CREATE TABLE courses
   startdate DATE NOT NULL,
   enddate  	DATE NOT NULL, 
   isenabled BOOLEAN DEFAULT TRUE,
-  description VARCHAR(300)
+  description VARCHAR(300),
+  test_id	INTEGER
 );
 
 CREATE TABLE modules (
@@ -25,6 +26,7 @@ CREATE TABLE modules (
   description VARCHAR(300),
   isenabled	 BOOLEAN DEFAULT TRUE,
   course_id  INTEGER NOT NULL,
+  test_id	INTEGER,
   FOREIGN KEY (course_id) REFERENCES courses (id) ON DELETE CASCADE
 );
 
@@ -35,11 +37,7 @@ CREATE TABLE tests
   startdate DATE NOT NULL,
   enddate  	DATE NOT NULL, 
   isenabled BOOLEAN DEFAULT TRUE,
-  passedscore INTEGER,
-  course_id  INTEGER,
-  module_id  INTEGER,
-  FOREIGN KEY (course_id) REFERENCES courses (id) ON DELETE CASCADE,
-  FOREIGN KEY (module_id) REFERENCES modules (id) ON DELETE CASCADE
+  passedscore INTEGER
 );
 
 CREATE TABLE lessons
@@ -52,13 +50,13 @@ CREATE TABLE lessons
   isenabled	 BOOLEAN DEFAULT TRUE,
   text VARCHAR (10000),
   module_id  INTEGER NOT NULL,
+  tes_id	INTEGER,
   FOREIGN KEY (module_id) REFERENCES modules (id) ON DELETE CASCADE
 );
 
 CREATE TABLE questions 
 (
   id        INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-  name      VARCHAR (50) NOT NULL,
   text VARCHAR (10000),
   score INTEGER,
   test_id	INTEGER NOT NULL,

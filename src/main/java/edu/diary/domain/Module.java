@@ -10,6 +10,7 @@ public class Module extends AbstractUnit implements Comparable<Module> {
   
   //TODO: maybe List? or something with order
   private Set<Lesson> lessons = new TreeSet<>();
+  private int courseId;
 
   public Set<Lesson> getLessons() {
     return lessons;
@@ -17,10 +18,16 @@ public class Module extends AbstractUnit implements Comparable<Module> {
   public void setLessons(Set<Lesson> lessons) {
     this.lessons = lessons;
   }
-  /* 
-   * @see edu.diary.domain.ModuleInterface#compareTo(edu.diary.domain.Module)
-   */
-  @Override
+  
+  public int getCourseId() {
+    return courseId;
+  }
+  
+  public void setCourseId(int courseId) {
+    this.courseId = courseId;
+  }
+  
+@Override
   public int compareTo(Module other) {//TODO: maybe move into base
     return getId() - other.getId();
   }
@@ -34,6 +41,6 @@ public class Module extends AbstractUnit implements Comparable<Module> {
           + "}";
   }
   
- 
+  
     
 }

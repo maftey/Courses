@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import edu.diary.domain.Question;
+import edu.diary.domain.Test;
 import edu.diary.repository.QuestionRepository;
 import edu.diary.util.DBConnection;
 import edu.diary.util.DateUtils;
@@ -22,19 +23,14 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 	@Override
 	public Question save(Question question) {
 
-		String insert = "INSERT INTO questions (name, startdate, enddate, description, isenabled, text) "
-				+ "VALUES (?,?,?,?,?,?)";
+		String insert = "INSERT INTO questions (text, score, test_id) "
+				+ "VALUES (?,?,?)";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(insert);
-			preparedStatement.setString(1, question.getName());
-			preparedStatement.setDate(2,
-					(DateUtils.calendarToSqlDate(question.getStartDate())));
-			preparedStatement.setDate(3,
-					(DateUtils.calendarToSqlDate(question.getEndDate())));
-			preparedStatement.setString(4, question.getDescription());
-			preparedStatement.setBoolean(5, question.getEnabled());
-			preparedStatement.setString(6, question.getText());
+			preparedStatement.setString(1, question.getText());
+			preparedStatement.setInt(2, question.getScore());
+			preparedStatement.setInt(3, question.getTestId());
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
 				logger.info("Record is inserted into questions table. question =  "
@@ -51,18 +47,17 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 
 	@Override
 	public Question update(Question question) {
-		String update = "UPDATE questions SET name = ?, startdate = ?, enddate = ?, description = ?, isenabled = ?, text = ?";
+		String update = "UPDATE questions "
+				+ "SET  text = ?, score = ?, test_id = ?"
+				+ "WHERE id = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(update);
-			preparedStatement.setString(1, question.getName());
-			preparedStatement.setDate(2,
-					(DateUtils.calendarToSqlDate(question.getStartDate())));
-			preparedStatement.setDate(3,
-					(DateUtils.calendarToSqlDate(question.getEndDate())));
-			preparedStatement.setString(4, question.getDescription());
-			preparedStatement.setBoolean(5, question.getEnabled());
-			preparedStatement.setString(6, question.getText());
+			preparedStatement.setString(1, question.getText());
+			preparedStatement.setInt(2, question.getScore());
+			preparedStatement.setInt(3, question.getTestId());
+			preparedStatement.setInt(3, question.getId());
+			
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
 				logger.info("Record is UPDATED into questions table" + question);
@@ -77,18 +72,18 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 	}
 
 	@Override
-	public boolean delete(String name) {
-		String delete = "DELETE FROM questions WHERE questions.name = ?";
+	public boolean delete(Question question) {
+		String delete = "DELETE FROM questions WHERE questions.id = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(delete);
-			preparedStatement.setString(1, name);
+			preparedStatement.setInt(1, question.getId());
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
-				logger.info("record is deleted with name = " + name);
+				logger.info("record is deleted with id = " + question.getId());
 			} else {
-				logger.info("no record in database with specified name = "
-						+ name);
+				logger.info("no record in database with specified id = "
+						+ question.getId());
 			}
 			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
@@ -99,26 +94,21 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 		return true;
 	}
 
-	@Override
-	public Question get(String name) {
-		String getCourse = "SELECT questions.name, questions.startdate, questions.enddate,"
-				+ " questions.isenabled, questions.description FROM questions "
-				+ "WHERE questions.name = ?";
+	public Question get(int id) {
+		String getCourse = "SELECT *"
+				+ "WHERE questions.id = ?";
 		Question question = new Question();
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(getCourse);
-			preparedStatement.setString(1, name);
+			preparedStatement.setInt(1, id);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				question.setName(resultSet.getString("name"));
-				question.setStartDate(DateUtils.sqlDateToCalendar(resultSet
-						.getDate("startdate")));
-				question.setEndDate(DateUtils.sqlDateToCalendar(resultSet
-						.getDate("endDate")));
-				question.setEnabled(resultSet.getBoolean("isenabled"));
-				question.setDescription(resultSet.getString("description"));
+				question.setId(resultSet.getInt("id"));
+				question.setScore(resultSet.getInt("score"));
+				question.setTestId(resultSet.getInt("test_id"));
+				question.setText(resultSet.getString("text"));
 			}
 			logger.info("Record got from questions table " + question);
 			DBConnection.close(resultSet);
@@ -129,6 +119,35 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 			logger.info("Cannot get entry from DB " + e);
 		}
 		return question;
+	}
+	
+	public Set<Question> getAllForTest(Test test) {
+		Set<Question> questions = new TreeSet<>();
+		Question question = new Question();
+		String getAll = "SELECT * FROM questions WHERE test_id = ?";
+		try {
+			Connection conn = DBConnection.openConnection();
+			conn = DBConnection.openConnection();
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(getAll);
+			preparedStatement.setInt(1, test.getTestId());
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				question.setId(resultSet.getInt("id"));
+				question.setScore(resultSet.getInt("score"));
+				question.setTestId(resultSet.getInt("test_id"));
+				question.setText(resultSet.getString("text"));
+				
+				questions.add(question);
+			}
+			logger.info("all enries was sucsessfully retrieved! ");
+			DBConnection.close(resultSet);
+			DBConnection.close(preparedStatement);
+			DBConnection.closeConnection();
+		} catch (SQLException e) {
+			logger.info("Cannot read from DB " + e);
+		}
+		return questions;
 	}
 
 	@Override
@@ -142,11 +161,10 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
-				question.setName(resultSet.getString("name"));
-				question.setStartDate(DateUtils.sqlDateToCalendar(resultSet
-						.getDate("startDate")));
-				question.setEndDate(DateUtils.sqlDateToCalendar(resultSet
-						.getDate("endDate")));
+				question.setId(resultSet.getInt("id"));
+				question.setScore(resultSet.getInt("score"));
+				question.setTestId(resultSet.getInt("test_id"));
+				question.setText(resultSet.getString("text"));
 				questions.add(question);
 			}
 			logger.info("all enries was sucsessfully retrieved! ");

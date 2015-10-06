@@ -2,8 +2,17 @@ package edu.diary.domain;
 
 public class Lesson extends AbstractUnit {
   private String text;
+  private int moduleId;
 
-  public String getText() {
+  public int getModuleId() {
+	return moduleId;
+}
+
+public void setModuleId(int moduleId) {
+	this.moduleId = moduleId;
+}
+
+public String getText() {
     return text;
   }
 
