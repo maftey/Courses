@@ -28,12 +28,12 @@ public class Diary {
 //		 TablesCreator dbCreator = new TablesCreator();
 //		 dbCreator.createDB();
 
-		Course javaCourse = new Course();
+		/*Course javaCourse = new Course();
 		javaCourse.setName("JAVA.NEW");
 		javaCourse.setStartDate(01, 10, 2016);
 		javaCourse.setEndDate(29, 12, 2016);
 		javaCourse.setEnabled(true);
-		javaCourse.setDescription("sdwehfuiwhfiuhwefuihweuifi");
+		javaCourse.setDescription("sdwehfuiwhfiuhwefuihweuifi");*/
 
 //		repository.save(javaCourse);
 //		 repository.get("JAVA.NEW");
@@ -41,7 +41,7 @@ public class Diary {
 		
 		// repository.save(course2);
 		  Set<Course> set = new TreeSet<>();
-				  set =repository.getAll();
+				  set = repository.getAll();
 		 System.out.println(set);
 		// repository.get(1);
 		// repository.delete(1);

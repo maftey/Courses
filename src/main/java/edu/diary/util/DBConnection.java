@@ -21,8 +21,8 @@ public class DBConnection {
 			Class.forName("org.postgresql.Driver");
 			String databaseURL = "jdbc:postgresql://localhost:5432/courses";
 			Properties properties = new Properties();
-			properties.put("user", "root");
-			properties.put("password", "root");
+			properties.put("user", "postgres");
+			properties.put("password", "Qwerty1");
 			conn = DriverManager.getConnection(databaseURL, properties);
 			LOG.info("Database connection established successfully");
 		} catch (ClassNotFoundException e) {

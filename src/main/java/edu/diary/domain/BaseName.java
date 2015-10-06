@@ -19,6 +19,16 @@ public abstract class BaseName extends Base {
 	private Calendar startDate = new GregorianCalendar();
 	private Calendar endDate = new GregorianCalendar();
 	private String description;
+	private int testId;
+	
+	public int getTestId() {
+		return testId;
+	}
+
+	public void setTestId(int testId) {
+		this.testId = testId;
+	}
+
 	/**
 	 * flag. shows enabled/disabled module
 	 */

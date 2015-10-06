@@ -8,9 +8,9 @@ public interface QuestionRepository {
 	Question save(Question module);
 
 	// false if not found
-	boolean delete(String name);
+	boolean delete(Question question);
 
-	Question get(String name);
+	Question get(int id);
 	
 	Set<Question> getAll();
 

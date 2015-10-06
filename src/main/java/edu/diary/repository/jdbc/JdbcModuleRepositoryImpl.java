@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
+
+import edu.diary.domain.Course;
 import edu.diary.domain.Module;
 import edu.diary.repository.ModuleRepository;
 import edu.diary.util.DBConnection;
@@ -20,8 +22,8 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 	@Override
 	public Module save(Module module) {
 
-		String insert = "INSERT INTO modules (name, startdate, enddate, description, isenabled) "
-				+ "VALUES (?,?,?,?,?)";
+		String insert = "INSERT INTO modules (name, startdate, enddate, description, isenabled, test_id, course_id) "
+				+ "VALUES (?,?,?,?,?,?,?)";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(insert);
@@ -32,6 +34,12 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 					(DateUtils.calendarToSqlDate(module.getEndDate())));
 			preparedStatement.setString(4, module.getDescription());
 			preparedStatement.setBoolean(5, module.getEnabled());
+			if(module.getTestId() == 0) 
+				preparedStatement.setNull(6, java.sql.Types.INTEGER);
+			else
+				preparedStatement.setInt(6, module.getTestId());
+			preparedStatement.setInt(7, module.getCourseId());
+			
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
 				logger.info("Record is inserted into modules table. module =  "
@@ -48,7 +56,9 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 
 	@Override
 	public Module update(Module module) {
-		String update = "UPDATE modules SET name = ?, startdate = ?, enddate = ?, description = ?, isenabled = ?";
+		String update = "UPDATE modules "
+				+ "SET name = ?, startdate = ?, enddate = ?, description = ?, isenabled = ?, test_id = ?, course_id = ?"
+				+ "WHERE id = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(update);
@@ -59,6 +69,14 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 					(DateUtils.calendarToSqlDate(module.getEndDate())));
 			preparedStatement.setString(4, module.getDescription());
 			preparedStatement.setBoolean(5, module.getEnabled());
+			
+			if(module.getTestId() == 0) 
+				preparedStatement.setNull(6, java.sql.Types.INTEGER);
+			else
+				preparedStatement.setInt(6, module.getTestId());
+			preparedStatement.setInt(7, module.getCourseId());
+			preparedStatement.setInt(8, module.getId());
+			
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
 				logger.info("Record is UPDATED into modules table" + module);
@@ -108,6 +126,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 			preparedStatement.setString(1, name);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
+				module.setId(resultSet.getInt("id"));
 				module.setName(resultSet.getString("name"));
 				module.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startdate")));
@@ -138,16 +157,53 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
+				module.setId(resultSet.getInt("id"));
 				module.setName(resultSet.getString("name"));
 				module.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startDate")));
 				module.setEndDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("endDate")));
+				module.setEnabled(resultSet.getBoolean("isenabled"));
+				module.setDescription(resultSet.getString("description"));
+				module.setCourseId(resultSet.getInt("course_id"));
 				modules.add(module);
 			}
 			logger.info("all enries was sucsessfully retrieved! ");
 			DBConnection.close(resultSet);
 			DBConnection.close(statement);
+			DBConnection.closeConnection();
+		} catch (SQLException e) {
+			logger.info("Cannot read from DB " + e);
+		}
+		return modules;
+	}
+	
+	public Set<Module> getAllForCourse(Course course) {
+		Set<Module> modules = new TreeSet<>();
+		Module module = new Module();
+		String getAll = "SELECT * FROM modules WHERE course_id = ?";
+		try {
+			Connection conn = DBConnection.openConnection();
+			conn = DBConnection.openConnection();
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(getAll);
+			preparedStatement.setInt(1, course.getId());
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				module.setId(resultSet.getInt("id"));
+				module.setName(resultSet.getString("name"));
+				module.setStartDate(DateUtils.sqlDateToCalendar(resultSet
+						.getDate("startDate")));
+				module.setEndDate(DateUtils.sqlDateToCalendar(resultSet
+						.getDate("endDate")));
+				module.setEnabled(resultSet.getBoolean("isenabled"));
+				module.setDescription(resultSet.getString("description"));
+				module.setCourseId(resultSet.getInt("course_id"));
+				modules.add(module);
+			}
+			logger.info("all enries was sucsessfully retrieved! ");
+			DBConnection.close(resultSet);
+			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
 		} catch (SQLException e) {
 			logger.info("Cannot read from DB " + e);
