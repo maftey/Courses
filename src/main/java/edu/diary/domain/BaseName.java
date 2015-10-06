@@ -1,9 +1,9 @@
 package edu.diary.domain;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.text.DateFormat;
 
 /**
  * Class represents a <code>name</code> and is a superClass for all entities.
@@ -65,10 +65,9 @@ public abstract class BaseName extends Base {
 	public void getFEndDate() {
 		System.out.println(formatDate(startDate));
 	}
-
+	
+	// startDate = new GregorianCalendar(day, year, month);
 	public void setStartDate(int day, int month, int year) {
-		// startDate = new GregorianCalendar(year, month, day);
-
 		startDate.set(Calendar.DAY_OF_MONTH, day);
 		startDate.set(Calendar.MONTH, month - 1);
 		startDate.set(Calendar.YEAR, year);

@@ -22,8 +22,8 @@ public class TestRepositoryImpl implements TestRepository {
 	@Override
 	public Test save(Test test) {
 
-		String insert = "INSERT INTO tests (name, startdate, enddate, isenabled, passedscore) "
-				+ "VALUES (?,?,?,?,?)";
+		String insert = "INSERT INTO tests (name, startdate, enddate,"
+				+ " isenabled, passedscore) VALUES (?,?,?,?,?)";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(insert);
@@ -50,7 +50,8 @@ public class TestRepositoryImpl implements TestRepository {
 
 	@Override
 	public Test update(Test test) {
-		String update = "UPDATE tests SET name = ?, startdate = ?, enddate = ?, isenabled = ?, passedscore = ?";
+		String update = "UPDATE tests SET name = ?, startdate = ?, "
+				+ "enddate = ?, isenabled = ?, passedscore = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(update);

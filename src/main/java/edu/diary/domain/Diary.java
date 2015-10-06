@@ -9,8 +9,7 @@ import java.util.logging.Logger;
 
 import edu.diary.repository.CourseRepository;
 import edu.diary.repository.jdbc.JdbcCourseRepositoryImpl;
-import edu.diary.util.TablesCreator;
-import edu.diary.util.TestCourseData;
+import edu.diary.util.DBInitialisator;
 
 /**
  * Created by Roma on 22.09.2015.
@@ -23,6 +22,8 @@ public class Diary {
 
 		// repository inintialisation
 		CourseRepository repository = new JdbcCourseRepositoryImpl();
+		
+		DBInitialisator.resetDatabase();
 
 		// creating tables in database
 //		 TablesCreator dbCreator = new TablesCreator();
@@ -39,10 +40,10 @@ public class Diary {
 //		 repository.get("JAVA.NEW");
 //		 repository.update(TestCourseData.testJavaCourse());
 		
-		// repository.save(course2);
-		  Set<Course> set = new TreeSet<>();
-				  set = repository.getAll();
-		 System.out.println(set);
+//		// repository.save(course2);
+//		  Set<Course> set = new TreeSet<>();
+//				  set = repository.getAll();
+//		 System.out.println(set);
 		// repository.get(1);
 		// repository.delete(1);
 		// repository.deleteAll();
