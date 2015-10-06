@@ -149,7 +149,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 	@Override
 	public Set<Module> getAll() {
 		Set<Module> modules = new TreeSet<>();
-		Module module = new Module();
+		
 		String getAll = "SELECT * FROM modules";
 		try {
 			Connection conn = DBConnection.openConnection();
@@ -157,6 +157,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
+				Module module = new Module();
 				module.setId(resultSet.getInt("id"));
 				module.setName(resultSet.getString("name"));
 				module.setStartDate(DateUtils.sqlDateToCalendar(resultSet
@@ -180,7 +181,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 	
 	public Set<Module> getAllForCourse(Course course) {
 		Set<Module> modules = new TreeSet<>();
-		Module module = new Module();
+		
 		String getAll = "SELECT * FROM modules WHERE course_id = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
@@ -190,6 +191,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 			preparedStatement.setInt(1, course.getId());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
+				Module module = new Module();
 				module.setId(resultSet.getInt("id"));
 				module.setName(resultSet.getString("name"));
 				module.setStartDate(DateUtils.sqlDateToCalendar(resultSet

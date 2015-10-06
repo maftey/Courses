@@ -132,7 +132,7 @@ public class TestRepositoryImpl implements TestRepository {
 	@Override
 	public Set<Test> getAll() {
 		Set<Test> tests = new TreeSet<>();
-		Test test = new Test();
+		
 		String getAll = "SELECT * FROM tests";
 		try {
 			Connection conn = DBConnection.openConnection();
@@ -140,6 +140,7 @@ public class TestRepositoryImpl implements TestRepository {
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
+				Test test = new Test();
 				test.setName(resultSet.getString("name"));
 				test.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startDate")));

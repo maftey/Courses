@@ -123,7 +123,7 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 	
 	public Set<Question> getAllForTest(Test test) {
 		Set<Question> questions = new TreeSet<>();
-		Question question = new Question();
+		
 		String getAll = "SELECT * FROM questions WHERE test_id = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
@@ -133,6 +133,7 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 			preparedStatement.setInt(1, test.getTestId());
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
+				Question question = new Question();
 				question.setId(resultSet.getInt("id"));
 				question.setScore(resultSet.getInt("score"));
 				question.setTestId(resultSet.getInt("test_id"));
@@ -153,7 +154,7 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 	@Override
 	public Set<Question> getAll() {
 		Set<Question> questions = new TreeSet<>();
-		Question question = new Question();
+		
 		String getAll = "SELECT * FROM questions";
 		try {
 			Connection conn = DBConnection.openConnection();
@@ -161,6 +162,7 @@ public class QuestionRepositoryImpl implements QuestionRepository {
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
+				Question question = new Question();
 				question.setId(resultSet.getInt("id"));
 				question.setScore(resultSet.getInt("score"));
 				question.setTestId(resultSet.getInt("test_id"));
