@@ -8,7 +8,7 @@ import java.util.TreeSet;
  */
 //TODO:Comparable move in base
 public class Course extends AbstractUnit implements Comparable<Course> {
-
+	
 	//TODO: maybe List? or something with order
   private Set<Module> modules = new TreeSet<>();
   

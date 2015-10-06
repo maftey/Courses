@@ -1,4 +1,5 @@
 package edu.diary.repository.jdbc;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,35 +8,36 @@ import java.sql.Statement;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
-import edu.diary.domain.Module;
-import edu.diary.repository.ModuleRepository;
+
+import edu.diary.domain.Test;
+import edu.diary.repository.TestRepository;
 import edu.diary.util.DBConnection;
 import edu.diary.util.DateUtils;
 
-public class JdbcModuleRepositoryImpl implements ModuleRepository {
+public class TestRepositoryImpl implements TestRepository {
 
-	private static Logger logger = Logger.getLogger("JdbcModuleRepository");
+	private static Logger logger = Logger.getLogger("JdbcLessonRepository");
 	private static int rows = 0;
 
 	@Override
-	public Module save(Module module) {
+	public Test save(Test test) {
 
-		String insert = "INSERT INTO modules (name, startdate, enddate, description, isenabled) "
+		String insert = "INSERT INTO tests (name, startdate, enddate, isenabled, passedscore) "
 				+ "VALUES (?,?,?,?,?)";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(insert);
-			preparedStatement.setString(1, module.getName());
+			preparedStatement.setString(1, test.getName());
 			preparedStatement.setDate(2,
-					(DateUtils.calendarToSqlDate(module.getStartDate())));
+					(DateUtils.calendarToSqlDate(test.getStartDate())));
 			preparedStatement.setDate(3,
-					(DateUtils.calendarToSqlDate(module.getEndDate())));
-			preparedStatement.setString(4, module.getDescription());
-			preparedStatement.setBoolean(5, module.getEnabled());
+					(DateUtils.calendarToSqlDate(test.getEndDate())));
+			preparedStatement.setBoolean(4, test.getEnabled());
+			preparedStatement.setInt(5, test.getPassedScore());
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
-				logger.info("Record is inserted into modules table. module =  "
-						+ module);
+				logger.info("Record is inserted into tests table. test =  "
+						+ test);
 			}
 			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
@@ -43,25 +45,25 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 		} catch (SQLException e) {
 			logger.info("INSERT FAILED: " + e);
 		}
-		return module;
+		return test;
 	}
 
 	@Override
-	public Module update(Module module) {
-		String update = "UPDATE modules SET name = ?, startdate = ?, enddate = ?, description = ?, isenabled = ?";
+	public Test update(Test test) {
+		String update = "UPDATE tests SET name = ?, startdate = ?, enddate = ?, isenabled = ?, passedscore = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(update);
-			preparedStatement.setString(1, module.getName());
+			preparedStatement.setString(1, test.getName());
 			preparedStatement.setDate(2,
-					(DateUtils.calendarToSqlDate(module.getStartDate())));
+					(DateUtils.calendarToSqlDate(test.getStartDate())));
 			preparedStatement.setDate(3,
-					(DateUtils.calendarToSqlDate(module.getEndDate())));
-			preparedStatement.setString(4, module.getDescription());
-			preparedStatement.setBoolean(5, module.getEnabled());
+					(DateUtils.calendarToSqlDate(test.getEndDate())));
+			preparedStatement.setBoolean(4, test.getEnabled());
+			preparedStatement.setInt(5, test.getPassedScore());
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
-				logger.info("Record is UPDATED into modules table" + module);
+				logger.info("Record is UPDATED into tests table" + test);
 			}
 			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
@@ -69,12 +71,12 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 		} catch (SQLException e) {
 			logger.info("UPDATED FAILED:" + e);
 		}
-		return module;
+		return test;
 	}
 
 	@Override
 	public boolean delete(String name) {
-		String delete = "DELETE FROM modules WHERE modules.name = ?";
+		String delete = "DELETE FROM tests WHERE tests.name = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(delete);
@@ -96,11 +98,11 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 	}
 
 	@Override
-	public Module get(String name) {
-		String getCourse = "SELECT modules.name, modules.startdate, modules.enddate,"
-				+ " modules.isenabled, modules.description FROM modules "
-				+ "WHERE modules.name = ?";
-		Module module = new Module();
+	public Test get(String name) {
+		String getCourse = "SELECT tests.name, tests.startdate, tests.enddate,"
+				+ " tests.isenabled, tests.description FROM tests "
+				+ "WHERE tests.name = ?";
+		Test test = new Test();
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn
@@ -108,15 +110,15 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 			preparedStatement.setString(1, name);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				module.setName(resultSet.getString("name"));
-				module.setStartDate(DateUtils.sqlDateToCalendar(resultSet
+				test.setName(resultSet.getString("name"));
+				test.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startdate")));
-				module.setEndDate(DateUtils.sqlDateToCalendar(resultSet
+				test.setEndDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("endDate")));
-				module.setEnabled(resultSet.getBoolean("isenabled"));
-				module.setDescription(resultSet.getString("description"));
+				test.setEnabled(resultSet.getBoolean("isenabled"));
+				test.setDescription(resultSet.getString("description"));
 			}
-			logger.info("Record got from modules table " + module);
+			logger.info("Record got from tests table " + test);
 			DBConnection.close(resultSet);
 			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
@@ -124,26 +126,26 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 
 			logger.info("Cannot get entry from DB " + e);
 		}
-		return module;
+		return test;
 	}
 
 	@Override
-	public Set<Module> getAll() {
-		Set<Module> modules = new TreeSet<>();
-		Module module = new Module();
-		String getAll = "SELECT * FROM modules";
+	public Set<Test> getAll() {
+		Set<Test> tests = new TreeSet<>();
+		Test test = new Test();
+		String getAll = "SELECT * FROM tests";
 		try {
 			Connection conn = DBConnection.openConnection();
 			conn = DBConnection.openConnection();
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
-				module.setName(resultSet.getString("name"));
-				module.setStartDate(DateUtils.sqlDateToCalendar(resultSet
+				test.setName(resultSet.getString("name"));
+				test.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startDate")));
-				module.setEndDate(DateUtils.sqlDateToCalendar(resultSet
+				test.setEndDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("endDate")));
-				modules.add(module);
+				tests.add(test);
 			}
 			logger.info("all enries was sucsessfully retrieved! ");
 			DBConnection.close(resultSet);
@@ -152,19 +154,19 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 		} catch (SQLException e) {
 			logger.info("Cannot read from DB " + e);
 		}
-		return modules;
+		return tests;
 	}
 
 	@Override
 	public boolean deleteAll() {
-		String deleteAll = "DELETE FROM modules";
+		String deleteAll = "DELETE FROM tests";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(deleteAll);
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
-				logger.info("All record are deleted from table modules ");
+				logger.info("All record are deleted from table tests ");
 			} else {
 				logger.info("DELETE FAILED ");
 			}
@@ -177,4 +179,5 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 		}
 		return true;
 	}
+
 }

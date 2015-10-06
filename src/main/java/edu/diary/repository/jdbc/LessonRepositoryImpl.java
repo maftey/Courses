@@ -1,4 +1,5 @@
 package edu.diary.repository.jdbc;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,35 +8,37 @@ import java.sql.Statement;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
-import edu.diary.domain.Module;
-import edu.diary.repository.ModuleRepository;
+
+import edu.diary.domain.Lesson;
+import edu.diary.repository.LessonRepository;
 import edu.diary.util.DBConnection;
 import edu.diary.util.DateUtils;
 
-public class JdbcModuleRepositoryImpl implements ModuleRepository {
+public class LessonRepositoryImpl implements LessonRepository {
 
-	private static Logger logger = Logger.getLogger("JdbcModuleRepository");
+	private static Logger logger = Logger.getLogger("JdbcLessonRepository");
 	private static int rows = 0;
 
 	@Override
-	public Module save(Module module) {
+	public Lesson save(Lesson lesson) {
 
-		String insert = "INSERT INTO modules (name, startdate, enddate, description, isenabled) "
-				+ "VALUES (?,?,?,?,?)";
+		String insert = "INSERT INTO lessons (name, startdate, enddate, description, isenabled, text) "
+				+ "VALUES (?,?,?,?,?,?)";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(insert);
-			preparedStatement.setString(1, module.getName());
+			preparedStatement.setString(1, lesson.getName());
 			preparedStatement.setDate(2,
-					(DateUtils.calendarToSqlDate(module.getStartDate())));
+					(DateUtils.calendarToSqlDate(lesson.getStartDate())));
 			preparedStatement.setDate(3,
-					(DateUtils.calendarToSqlDate(module.getEndDate())));
-			preparedStatement.setString(4, module.getDescription());
-			preparedStatement.setBoolean(5, module.getEnabled());
+					(DateUtils.calendarToSqlDate(lesson.getEndDate())));
+			preparedStatement.setString(4, lesson.getDescription());
+			preparedStatement.setBoolean(5, lesson.getEnabled());
+			preparedStatement.setString(6, lesson.getText());
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
-				logger.info("Record is inserted into modules table. module =  "
-						+ module);
+				logger.info("Record is inserted into lessons table. lesson =  "
+						+ lesson);
 			}
 			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
@@ -43,25 +46,26 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 		} catch (SQLException e) {
 			logger.info("INSERT FAILED: " + e);
 		}
-		return module;
+		return lesson;
 	}
 
 	@Override
-	public Module update(Module module) {
-		String update = "UPDATE modules SET name = ?, startdate = ?, enddate = ?, description = ?, isenabled = ?";
+	public Lesson update(Lesson lesson) {
+		String update = "UPDATE lessons SET name = ?, startdate = ?, enddate = ?, description = ?, isenabled = ?, text = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(update);
-			preparedStatement.setString(1, module.getName());
+			preparedStatement.setString(1, lesson.getName());
 			preparedStatement.setDate(2,
-					(DateUtils.calendarToSqlDate(module.getStartDate())));
+					(DateUtils.calendarToSqlDate(lesson.getStartDate())));
 			preparedStatement.setDate(3,
-					(DateUtils.calendarToSqlDate(module.getEndDate())));
-			preparedStatement.setString(4, module.getDescription());
-			preparedStatement.setBoolean(5, module.getEnabled());
+					(DateUtils.calendarToSqlDate(lesson.getEndDate())));
+			preparedStatement.setString(4, lesson.getDescription());
+			preparedStatement.setBoolean(5, lesson.getEnabled());
+			preparedStatement.setString(6, lesson.getText());
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
-				logger.info("Record is UPDATED into modules table" + module);
+				logger.info("Record is UPDATED into lessons table" + lesson);
 			}
 			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
@@ -69,12 +73,12 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 		} catch (SQLException e) {
 			logger.info("UPDATED FAILED:" + e);
 		}
-		return module;
+		return lesson;
 	}
 
 	@Override
 	public boolean delete(String name) {
-		String delete = "DELETE FROM modules WHERE modules.name = ?";
+		String delete = "DELETE FROM lessons WHERE lessons.name = ?";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(delete);
@@ -96,11 +100,11 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 	}
 
 	@Override
-	public Module get(String name) {
-		String getCourse = "SELECT modules.name, modules.startdate, modules.enddate,"
-				+ " modules.isenabled, modules.description FROM modules "
-				+ "WHERE modules.name = ?";
-		Module module = new Module();
+	public Lesson get(String name) {
+		String getCourse = "SELECT lessons.name, lessons.startdate, lessons.enddate,"
+				+ " lessons.isenabled, lessons.description FROM lessons "
+				+ "WHERE lessons.name = ?";
+		Lesson lesson = new Lesson();
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn
@@ -108,15 +112,15 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 			preparedStatement.setString(1, name);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				module.setName(resultSet.getString("name"));
-				module.setStartDate(DateUtils.sqlDateToCalendar(resultSet
+				lesson.setName(resultSet.getString("name"));
+				lesson.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startdate")));
-				module.setEndDate(DateUtils.sqlDateToCalendar(resultSet
+				lesson.setEndDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("endDate")));
-				module.setEnabled(resultSet.getBoolean("isenabled"));
-				module.setDescription(resultSet.getString("description"));
+				lesson.setEnabled(resultSet.getBoolean("isenabled"));
+				lesson.setDescription(resultSet.getString("description"));
 			}
-			logger.info("Record got from modules table " + module);
+			logger.info("Record got from lessons table " + lesson);
 			DBConnection.close(resultSet);
 			DBConnection.close(preparedStatement);
 			DBConnection.closeConnection();
@@ -124,26 +128,26 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 
 			logger.info("Cannot get entry from DB " + e);
 		}
-		return module;
+		return lesson;
 	}
 
 	@Override
-	public Set<Module> getAll() {
-		Set<Module> modules = new TreeSet<>();
-		Module module = new Module();
-		String getAll = "SELECT * FROM modules";
+	public Set<Lesson> getAll() {
+		Set<Lesson> lessons = new TreeSet<>();
+		Lesson lesson = new Lesson();
+		String getAll = "SELECT * FROM lessons";
 		try {
 			Connection conn = DBConnection.openConnection();
 			conn = DBConnection.openConnection();
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
-				module.setName(resultSet.getString("name"));
-				module.setStartDate(DateUtils.sqlDateToCalendar(resultSet
+				lesson.setName(resultSet.getString("name"));
+				lesson.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startDate")));
-				module.setEndDate(DateUtils.sqlDateToCalendar(resultSet
+				lesson.setEndDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("endDate")));
-				modules.add(module);
+				lessons.add(lesson);
 			}
 			logger.info("all enries was sucsessfully retrieved! ");
 			DBConnection.close(resultSet);
@@ -152,19 +156,19 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 		} catch (SQLException e) {
 			logger.info("Cannot read from DB " + e);
 		}
-		return modules;
+		return lessons;
 	}
 
 	@Override
 	public boolean deleteAll() {
-		String deleteAll = "DELETE FROM modules";
+		String deleteAll = "DELETE FROM lessons";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn
 					.prepareStatement(deleteAll);
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
-				logger.info("All record are deleted from table modules ");
+				logger.info("All record are deleted from table lessons ");
 			} else {
 				logger.info("DELETE FAILED ");
 			}

@@ -5,20 +5,19 @@ import java.util.Set;
 import edu.diary.domain.Course;
 
 public interface CourseRepository {
-  
-  
-  Course save(Course course);
 
-  //    false if not found
-  void delete(int id);
+	Course save(Course course);
 
-  Course get(int id);
+	
+	boolean delete(String name);
 
-  // null if not found
-  Set<Course> getAll();
+	Course get(String name);
 
-  void deleteAll();
+	
+	Set<Course> getAll();
 
-Course update(Course course);
+	boolean deleteAll();
+
+	Course update(Course course);
 
 }

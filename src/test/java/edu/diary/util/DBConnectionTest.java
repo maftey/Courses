@@ -4,6 +4,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
@@ -20,10 +21,16 @@ public class DBConnectionTest {
 		conn.close();
 	}
 
-	// @Test
-	// public void closeStatementTest() {
-	// throw new RuntimeException("Test not implemented");
-	// }
+	 @Test
+	 public void closeStatementTest() throws SQLException {
+		 Connection conn =null;
+		 Statement statement = conn.createStatement();
+		 DBConnection.close(statement);
+		 assertEquals(statement == null, statement);
+		 
+		 
+	 throw new RuntimeException("Test not implemented");
+	 }
 	//
 	// @Test
 	// public void closeResultSetTest() {

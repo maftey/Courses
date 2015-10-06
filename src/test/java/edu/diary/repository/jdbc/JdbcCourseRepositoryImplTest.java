@@ -1,20 +1,22 @@
 package edu.diary.repository.jdbc;
 
-import org.testng.annotations.BeforeClass;
+import static org.testng.AssertJUnit.assertEquals;
 
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.AssertJUnit.assertEquals;
 import edu.diary.domain.Course;
 import edu.diary.repository.CourseRepository;
 import edu.diary.util.TablesCreator;
-import static edu.diary.util.TestCourseData.JAVACOURSE;;
-
+import edu.diary.util.TestCourseData;
 
 public class JdbcCourseRepositoryImplTest {
 	private CourseRepository courseRepository = new JdbcCourseRepositoryImpl();
 
-	@BeforeClass
+	@BeforeMethod
 	public void setUp() {
 		TablesCreator dbCreator = new TablesCreator();
 		dbCreator.createDB();
@@ -22,33 +24,38 @@ public class JdbcCourseRepositoryImplTest {
 
 	@Test
 	public void delete() {
-		throw new RuntimeException("Test not implemented");
-	}
-
-	@Test
-	public void deleteAll() {
-		throw new RuntimeException("Test not implemented");
+		assertEquals(courseRepository.delete("JAVA.Basics"), true);
 	}
 
 	@Test
 	public void get() {
-		throw new RuntimeException("Test not implemented");
+		
 	}
 
 	@Test
 	public void getAll() {
-		throw new RuntimeException("Test not implemented");
+		Set<Course>testSet = new TreeSet<Course>();
+		testSet = courseRepository.getAll();
+		assertEquals(true, (!testSet.isEmpty()));
 	}
 
 	@Test
 	public void save() {
-		Course savedCourse = courseRepository.save(JAVACOURSE);
-		Course retrievedCourse = courseRepository.get(1);
-		assertEquals(JAVACOURSE, retrievedCourse);
+		Course savedCourse = courseRepository.save(TestCourseData
+				.testJavaCourse());
+		Course retrievedCourse = courseRepository.get("JAVA.NEW");
+		assertEquals(savedCourse, retrievedCourse);
 	}
 
 	@Test
 	public void update() {
-		throw new RuntimeException("Test not implemented");
+		Course updateCourse = courseRepository.update(TestCourseData
+				.testJavaCourse());
+		assertEquals(true, (JdbcCourseRepositoryImpl.getRows() > 0));
+	}
+
+	@Test
+	public void deleteAll() {
+		assertEquals(courseRepository.deleteAll(), true);
 	}
 }

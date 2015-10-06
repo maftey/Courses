@@ -5,18 +5,19 @@ import java.util.Set;
 import edu.diary.domain.Module;
 
 public interface ModuleRepository {
-  
 
-  // CREATE if Module.module = null, if id!=null -> UPDATE
-  Module save(Module module);
+	// CREATE if Module.module = null, if id!=null -> UPDATE
+	Module save(Module module);
 
-  //    false if not found
-  boolean delete(int id);
+	// false if not found
+	boolean delete(String name);
 
-  Module get(int id);
+	Module get(String name);
 
-  // null if not found
-  Set<Module> getAll();
+	// null if not found
+	Set<Module> getAll();
 
-  void deleteAll();
+	boolean deleteAll();
+
+	Module update(Module module);
 }
