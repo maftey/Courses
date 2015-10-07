@@ -38,7 +38,9 @@ public class Course extends AbstractUnit implements Comparable<Course> {
            + ", name: " + getName() 
            + ", Start date: " + formatDate(getStartDate()) 
            + ", End date: " + formatDate(getEndDate())
-           + " }"; 
+           + ", enabled: " + getEnabled()
+           + ", description: " + getDescription()
+           +"}"; 
   }
  
 }
