@@ -56,7 +56,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 	}
 
 	@Override
-	public Module update(Module module) {
+	public Module update(Module module, int id) {
 		String update = "UPDATE modules "
 				+ "SET name = ?, startdate = ?, enddate = ?, description = ?, isenabled = ?, test_id = ?, course_id = ?"
 				+ "WHERE id = ?";
@@ -187,6 +187,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 		return modules;
 	}
 
+	@Override
 	public Set<Module> getAllForCourse(Course course) {
 		Set<Module> modules = new TreeSet<>();
 
@@ -208,6 +209,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 				module.setEnabled(resultSet.getBoolean("isenabled"));
 				module.setDescription(resultSet.getString("description"));
 				module.setCourseId(resultSet.getInt("course_id"));
+				module.setTestId(resultSet.getInt("test_id"));
 				modules.add(module);
 				logger.info("retrieving entry from DB: " + module);
 			}

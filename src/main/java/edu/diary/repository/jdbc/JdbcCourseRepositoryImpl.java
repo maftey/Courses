@@ -55,7 +55,7 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 	}
 
 	@Override
-	public Course update(Course course) {
+	public Course update(Course course, int id) {
 		String update = ""
 				+ "UPDATE courses "
 				+ "SET name = ?, startdate = ?, enddate = ?, isenabled = ?, description = ?, test_id = ? "

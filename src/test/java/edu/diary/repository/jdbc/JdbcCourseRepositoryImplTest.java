@@ -54,7 +54,7 @@ public class JdbcCourseRepositoryImplTest {
 	public void update() {
 		TestCourse updated = new TestCourse(JAVACOURSE);
 		updated.setDescription("Updated from TestCourseData");
-		repository.update(updated);
+		repository.update(updated, JAVACOURSE.getId());
 		assertEquals(updated, repository.get(JAVACOURSE.getName()));
 
 	}
