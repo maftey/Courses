@@ -13,6 +13,7 @@ import edu.diary.domain.Course;
 import edu.diary.repository.CourseRepository;
 import edu.diary.util.DBConnection;
 import edu.diary.util.DateUtils;
+import edu.diary.util.NotFoundException;
 
 public class JdbcCourseRepositoryImpl implements CourseRepository {
 	private static Logger logger = Logger.getLogger("JdbcCourseRepository");
@@ -89,6 +90,7 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 		return course;
 	}
 	
+	@Override
 	public boolean delete(Course course) {
 		String delete = "DELETE FROM courses WHERE courses.id = ?";
 		try {
@@ -97,7 +99,7 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 			preparedStatement.setInt(1, course.getId());
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
-				logger.info("record is deleted with name = " + course.getName());
+				logger.info("record is deleted with name = " + course);
 			} else {
 				logger.info("no record in database with specified name = "
 						+ course.getName());
@@ -135,8 +137,8 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 	}
 
 	@Override
-  public Course get(String name) {
-		String getCourse = "SELECT courses.name, courses.startdate, courses.enddate,"
+  public Course get(String name) throws NotFoundException {
+		String getCourse = "SELECT courses.id, courses.name, courses.startdate, courses.enddate,"
 				+ " courses.isenabled, courses.description FROM courses "
 				+ "WHERE courses.name = ?";
 		Course course = new Course();
@@ -146,7 +148,7 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 					.prepareStatement(getCourse);
 			preparedStatement.setString(1, name);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			resultSet.next();
+			while (resultSet.next()) {
 			course.setId(resultSet.getInt("id"));
 			course.setName(resultSet.getString("name"));
 			course.setStartDate(DateUtils.sqlDateToCalendar(resultSet
@@ -155,7 +157,7 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 			  .getDate("endDate")));
 		    course.setEnabled(resultSet.getBoolean("isenabled"));
 			course.setDescription(resultSet.getString("description"));
-			
+			}				
 			logger.info("Record got from courses table " + course);
 			DBConnection.close(resultSet);
 			DBConnection.close(preparedStatement);
@@ -188,8 +190,10 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 				course.setEnabled(resultSet.getBoolean("isenabled"));
 				course.setDescription(resultSet.getString("description"));
 				courses.add(course);
+				logger.info("retrieving entry from DB: " + course);
 			}
 			logger.info("all enries was sucsessfully retrieved! ");
+			
 			DBConnection.close(resultSet);
 			DBConnection.close(statement);
 			DBConnection.closeConnection();
@@ -200,7 +204,7 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 	}
 
 	@Override
-	public boolean deleteAll() {
+	public void deleteAll() {
 		String deleteAll = "DELETE FROM courses";
 		try {
 			Connection conn = DBConnection.openConnection();
@@ -219,7 +223,6 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 		} catch (SQLException e) {
 			logger.info("DELETE FAILED:" + e);
 		}
-		return true;
 	}
 
 	public static int getRows() {

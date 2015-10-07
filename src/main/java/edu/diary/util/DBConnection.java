@@ -24,7 +24,6 @@ public class DBConnection {
 			properties.put("user", "root");
 			properties.put("password", "root");
 			conn = DriverManager.getConnection(databaseURL, properties);
-			LOG.info("Database connection established successfully");
 		} catch (ClassNotFoundException e) {
 			LOG.info("Error: unable to load driver class!");
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -45,7 +44,6 @@ public class DBConnection {
 		try {
 			if (conn != null) {
 				conn.close();
-				LOG.info("Connection closed");
 			}
 		} catch (SQLException e) {
 			LOG.info("Cannot closed" + e);
@@ -56,7 +54,6 @@ public class DBConnection {
 		try {
 			if (statement != null) {
 				statement.close();
-				LOG.info("Statement closed");
 			}
 		} catch (SQLException e) {
 			LOG.info("Cannot close" + e);
@@ -67,7 +64,6 @@ public class DBConnection {
 		try {
 			if (preparedStatement != null) {
 				preparedStatement.close();
-				LOG.info("PreparedStatement closed");
 			}
 		} catch (SQLException e) {
 			LOG.info("Cannot close" + e);
@@ -79,7 +75,6 @@ public class DBConnection {
 		try {
 			if (resultSet != null) {
 				resultSet.close();
-				LOG.info("ResultSet closed");
 			}
 		} catch (SQLException e) {
 			LOG.info("Cannot close" + e);

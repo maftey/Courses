@@ -6,51 +6,60 @@ import java.util.GregorianCalendar;
 import edu.diary.domain.Course;
 
 public class TestCourseData {
-	
-	
-	
-	
 
-	public static final Course testJavaCourse(){
-		Course javaCourse = new Course();
-		javaCourse.setName("JAVA.NEW");
-		javaCourse.setStartDate(01, 10, 2016);
-		javaCourse.setEndDate(29, 12, 2016);
-		javaCourse.setEnabled(true);
-		javaCourse.setDescription("sdwehfuiwhfiuhwefuihweuifi");
-		return javaCourse;
-	}
-				
-	public static final Course testDotNetCourse(){
-		Course javaCourse = new Course();
-		javaCourse.setName("DotNet.NEW");
-		javaCourse.setStartDate(01, 10, 2016);
-		javaCourse.setEndDate(29, 12, 2016);
-		javaCourse.setEnabled(false);
-		javaCourse.setDescription("new course");
-		return javaCourse;
-	}
+	// name, startdate, enddate, isenabled, description
+	
+	public static final TestCourse JAVACOURSE = new TestCourse(1,
+			"JAVA.Basics", (new GregorianCalendar(7, 10, 2015)), (
+				new GregorianCalendar(10, 02, 2016)), true, "Java Core");
+	
+	public static final TestCourse DOTNETCOURSE = new TestCourse(2,
+			"'DotNet for beginners", (new GregorianCalendar(07, 10, 2015)), (
+				new GregorianCalendar(20, 03, 2016)), true, "Dot Net");
 
 	
-	//	name, startdate, enddate, isenabled, description
-	public static final TestCourse DOTNETCOURSE = new TestCourse(
-			"DotNet.NEW", (null), (null), false, "new course");
-		
 	
-	public static final TestCourse JAVACOURSE = new TestCourse(
-			"JAVA.NEW",(null), (null), false, "new course");
+	public static final TestCourse CREATEDCOURSE = new TestCourse(3,
+			"new Course", (new GregorianCalendar(7, 10, 2015)), (
+				new GregorianCalendar(10, 02, 2016)), true, "new Course");
 	
+	public static final TestCourse PHPCOURSE = new TestCourse();
 
-	static class TestCourse extends Course {
-		
-		
-		public TestCourse(String name, Calendar date,
-				Calendar Calendar, boolean enabled, String description) {
-			
+	public static Course getCreated() {
+        return new Course();
+    }
+	public static Course getUpdated() {
+        Course updated = new TestCourse(JAVACOURSE);
+        updated.setDescription("Updated from TestCourseData");
+        return updated;
+    }
+	
+	
+	
+	public static class TestCourse extends Course {
+		public TestCourse() {
+			}
+
+		public TestCourse copyOfCourse() {
+			return new TestCourse(this);
 		}
-//		public TestCourse(String name, Calendar startDate, Calendar endDate, String description) {
-//            this(name, startDate, endDate, description);
-//        }
-		
+
+		public TestCourse(int id, String name, Calendar startDate, Calendar endDate,
+				boolean isEnabled, String description) {
+			this.setId(id);
+			this.setName(name);
+			this.setStartDate(startDate);
+			this.setEndDate(endDate);
+			this.setEnabled(isEnabled);
+			this.setDescription(description);
+		}
+
+		public TestCourse(TestCourse testCourse) {
+			this(testCourse.getId(),testCourse.getName(), testCourse.getStartDate(), 
+					testCourse.getEndDate(), testCourse.getEnabled(), 
+					testCourse.getDescription());
+		}
+
 	}
+
 }

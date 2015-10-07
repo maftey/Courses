@@ -67,18 +67,20 @@ public abstract class BaseName extends Base {
 	}
 	
 	// startDate = new GregorianCalendar(day, year, month);
-	public void setStartDate(int day, int month, int year) {
+	public BaseName setStartDate(int day, int month, int year) {
 		startDate.set(Calendar.DAY_OF_MONTH, day);
 		startDate.set(Calendar.MONTH, month - 1);
 		startDate.set(Calendar.YEAR, year);
+		return this;
 
 	}
 
-	public void setEndDate(int day, int month, int year) {
+	public BaseName setEndDate(int day, int month, int year) {
 
 		endDate.set(Calendar.DAY_OF_MONTH, day);
 		endDate.set(Calendar.MONTH, month - 1);
 		endDate.set(Calendar.YEAR, year);
+		return this;
 	}
 
 	public void setStartDate(Calendar startDate) {

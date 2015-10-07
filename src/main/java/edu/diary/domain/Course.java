@@ -3,8 +3,9 @@ package edu.diary.domain;
 import java.util.Set;
 import java.util.TreeSet;
 
-/**
- * @author Roma Representation of course and modules.
+/**Representation of course and modules
+ * @author Roman and Michael. 
+ * .
  */
 //TODO:Comparable move in base
 public class Course extends AbstractUnit implements Comparable<Course> {

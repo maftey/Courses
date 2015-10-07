@@ -16,8 +16,11 @@ public interface CourseRepository {
 	
 	Set<Course> getAll();
 
-	boolean deleteAll();
+	void deleteAll();
 
 	Course update(Course course);
+
+
+	boolean delete(Course course);
 
 }
