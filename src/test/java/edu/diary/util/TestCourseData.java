@@ -10,29 +10,21 @@ public class TestCourseData {
 	// name, startdate, enddate, isenabled, description
 	
 	public static final TestCourse JAVACOURSE = new TestCourse(1,
-			"JAVA.Basics", (new GregorianCalendar(7, 10, 2015)), (
-				new GregorianCalendar(10, 02, 2016)), true, "Java Core");
+			"JAVA.Basics", (new GregorianCalendar(2015, 10, 07)), (
+				new GregorianCalendar(2016, 02, 10)), true, "Java Core");
 	
 	public static final TestCourse DOTNETCOURSE = new TestCourse(2,
-			"'DotNet for beginners", (new GregorianCalendar(07, 10, 2015)), (
-				new GregorianCalendar(20, 03, 2016)), true, "Dot Net");
+			"'DotNet for beginners", (new GregorianCalendar(2015, 10, 07)), (
+				new GregorianCalendar(2016, 03, 20)), true, "Dot Net");
 
 	
 	
 	public static final TestCourse CREATEDCOURSE = new TestCourse(3,
-			"new Course", (new GregorianCalendar(7, 10, 2015)), (
-				new GregorianCalendar(10, 02, 2016)), true, "new Course");
+			"new Course", (new GregorianCalendar(2015, 10, 7)), (
+				new GregorianCalendar(2016, 02, 07)), true, "new Course");
 	
 	public static final TestCourse PHPCOURSE = new TestCourse();
 
-	public static Course getCreated() {
-        return new Course();
-    }
-	public static Course getUpdated() {
-        Course updated = new TestCourse(JAVACOURSE);
-        updated.setDescription("Updated from TestCourseData");
-        return updated;
-    }
 	
 	
 	
