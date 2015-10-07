@@ -14,7 +14,7 @@ import edu.diary.repository.TestRepository;
 import edu.diary.util.DBConnection;
 import edu.diary.util.DateUtils;
 
-public class TestRepositoryImpl implements TestRepository {
+public class JdbcTestRepositoryImpl implements TestRepository {
 
 	private static Logger logger = Logger.getLogger("JdbcLessonRepository");
 	private static int rows = 0;

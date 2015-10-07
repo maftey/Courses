@@ -3,13 +3,11 @@ package edu.diary.repository.jdbc;
 import static edu.diary.util.TestCourseData.CREATEDCOURSE;
 import static edu.diary.util.TestCourseData.DOTNETCOURSE;
 import static edu.diary.util.TestCourseData.JAVACOURSE;
-import static edu.diary.util.TestCourseData.PHPCOURSE;
 import static org.testng.AssertJUnit.assertEquals;
-
-
 
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -17,12 +15,12 @@ import org.testng.annotations.Test;
 import edu.diary.domain.Course;
 import edu.diary.repository.CourseRepository;
 import edu.diary.util.DBInitialisator;
-import edu.diary.util.NotFoundException;
 import edu.diary.util.TestCourseData;
 import edu.diary.util.TestCourseData.TestCourse;
 
 public class JdbcCourseRepositoryImplTest {
 
+	private static Logger logger = Logger.getLogger("JdbcCourseRepositoryTest");
 	private CourseRepository repository = new JdbcCourseRepositoryImpl();
 	private DBInitialisator initialisator = new DBInitialisator();
 
@@ -52,20 +50,14 @@ public class JdbcCourseRepositoryImplTest {
 		assertEquals(JAVACOURSE, actual);
 	}
 
-	
-
 	@Test
 	public void update() {
-		Course updated = getUpdated();
+		TestCourse updated = new TestCourse(JAVACOURSE);
+		updated.setDescription("Updated from TestCourseData");
 		repository.update(updated);
 		assertEquals(updated, repository.get(JAVACOURSE.getName()));
-	}
 
-	private Course getUpdated() {
-		Course updated = new TestCourse(JAVACOURSE);
-        updated.setDescription("Updated from TestCourseData");
-        return updated;
-		}
+	}
 
 	@Test
 	public void getAll() {
@@ -84,19 +76,19 @@ public class JdbcCourseRepositoryImplTest {
 		expected = repository.getAll();
 		assertEquals(0, expected.size());
 	}
-	
+
 	// @Test//(expectedExceptions = NotFoundException.class)
-		// public void testDeleteNotFound() throws Exception {
-		//
-		// }
-		
-//		@Test(expectedExceptions = NotFoundException.class)
-//		public void testGetNotFound() throws Exception {
-//			repository.get("asdasd");
-//		}
-		
-//		@Test(expectedExceptions = NotFoundException.class)
-//		public void testNotFoundUpdate() throws Exception {
-//			repository.update(PHPCOURSE);
-//		}
+	// public void testDeleteNotFound() throws Exception {
+	//
+	// }
+
+	// @Test(expectedExceptions = NotFoundException.class)
+	// public void testGetNotFound() throws Exception {
+	// repository.get("asdasd");
+	// }
+
+	// @Test(expectedExceptions = NotFoundException.class)
+	// public void testNotFoundUpdate() throws Exception {
+	// repository.update(PHPCOURSE);
+	// }
 }

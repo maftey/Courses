@@ -10,6 +10,7 @@ public class Module extends AbstractUnit implements Comparable<Module> {
   
   //TODO: maybe List? or something with order
   private Set<Lesson> lessons = new TreeSet<>();
+  
   private int courseId;
 
   public Set<Lesson> getLessons() {

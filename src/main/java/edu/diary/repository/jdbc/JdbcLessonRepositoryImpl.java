@@ -15,7 +15,7 @@ import edu.diary.repository.LessonRepository;
 import edu.diary.util.DBConnection;
 import edu.diary.util.DateUtils;
 
-public class LessonRepositoryImpl implements LessonRepository {
+public class JdbcLessonRepositoryImpl implements LessonRepository {
 
 	private static Logger logger = Logger.getLogger("JdbcLessonRepository");
 	private static int rows = 0;
