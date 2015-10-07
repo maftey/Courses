@@ -1,8 +1,13 @@
 package edu.diary.repository.jdbc;
 
-import static edu.diary.util.TestCourseData.CREATEDCOURSE;
-import static edu.diary.util.TestCourseData.DOTNETCOURSE;
-import static edu.diary.util.TestCourseData.JAVAMODULE1;
+import static edu.diary.util.TestModuleData.CREATEDMODULE;
+import static edu.diary.util.TestModuleData.DOTNETMODULE1;
+import static edu.diary.util.TestModuleData.DOTNETMODULE2;
+import static edu.diary.util.TestModuleData.JAVAMODULE1;
+import static edu.diary.util.TestModuleData.JAVAMODULE2;
+import static edu.diary.util.TestModuleData.JAVAMODULE3;
+import static edu.diary.util.TestModuleData.JAVAMODULE4;
+import static edu.diary.util.TestModuleData.JAVAMODULE5;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.util.Set;
@@ -14,7 +19,8 @@ import org.testng.annotations.Test;
 import edu.diary.domain.Module;
 import edu.diary.repository.ModuleRepository;
 import edu.diary.util.DBInitialisator;
-import edu.diary.util.TestCourseData.TestModule;
+import edu.diary.util.TestModuleData;
+import edu.diary.util.TestModuleData.TestModule;
 
 public class JdbcModuleRepositoryImplTest {
 	
@@ -29,9 +35,14 @@ public class JdbcModuleRepositoryImplTest {
 
   @Test
   public void delete() {
-	  repository.delete("JAVA.Basics");
+	  repository.delete("java module1");
 		Set<Module> expected = new TreeSet<Module>();
-		expected.add(DOTNETCOURSE);
+		expected.add(JAVAMODULE2);
+		expected.add(JAVAMODULE3);
+		expected.add(JAVAMODULE4);
+		expected.add(JAVAMODULE5);
+		expected.add(DOTNETMODULE1);
+		expected.add(DOTNETMODULE2);
 		assertEquals(expected, repository.getAll());
   }
 
@@ -54,7 +65,12 @@ public class JdbcModuleRepositoryImplTest {
 	  Set<Module> actual = new TreeSet<Module>();
 		Set<Module> expected = new TreeSet<Module>();
 		expected.add(JAVAMODULE1);
-		expected.add(DOTNETCOURSE);
+		expected.add(JAVAMODULE2);
+		expected.add(JAVAMODULE3);
+		expected.add(JAVAMODULE4);
+		expected.add(JAVAMODULE5);
+		expected.add(DOTNETMODULE1);
+		expected.add(DOTNETMODULE2);
 		actual = repository.getAll();
 		assertEquals(expected, actual);
   }
@@ -66,13 +82,13 @@ public class JdbcModuleRepositoryImplTest {
 
   @Test
   public void save() {
-	  Module saved = repository.save(CREATEDCOURSE);
-		assertEquals(CREATEDCOURSE, repository.get(CREATEDCOURSE.getName()));
+	  Module saved = repository.save(CREATEDMODULE);
+		assertEquals(CREATEDMODULE, repository.get("new Module"));
   }
 
   @Test
   public void update() {
-	  TestModule updated = new TestModule(JAVAMODULE1);
+	  TestModuleData.TestModule updated = new TestModuleData.TestModule(JAVAMODULE1);
 		updated.setDescription("Updated from TestCourseData");
 		repository.update(updated);
 		assertEquals(updated, repository.get(updated.getName()));

@@ -8,16 +8,18 @@ public interface ModuleRepository {
 
 	// CREATE if Module.module = null, if id!=null -> UPDATE
 	Module save(Module module);
-
-	// false if not found
-	boolean delete(String name);
+	
+	Module update(Module module);
 
 	Module get(String name);
+	
+	// false if not found
+	boolean delete(String name);
 
 	// null if not found
 	Set<Module> getAll();
 
 	boolean deleteAll();
 
-	Module update(Module module);
+	
 }

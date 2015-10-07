@@ -21,7 +21,7 @@ INSERT INTO modules (name, startdate, enddate, description, isenabled, course_id
 INSERT INTO modules (name, startdate, enddate, description, isenabled, course_id, test_id) VALUES ('java module2','11-Oct-2015', '14-Oct-2015', 'Objects and classes',true, 1, 2);
 INSERT INTO modules (name, startdate, enddate, description, isenabled, course_id, test_id) VALUES ('java module3','15-Oct-2015', '18-Oct-2015', 'Inheritance',true, 1, 3);
 INSERT INTO modules (name, startdate, enddate, description, isenabled, course_id, test_id) VALUES ('java module4','21-Oct-2015', '24-Oct-2015', 'Interfaces and nested classes',true, 1, 4);
-INSERT INTO modules (name, startdate, enddate, description, isenabled, course_id, test_id) VALUES ('java module5','27-Oct-2015', '30-Oct-2015', 'Generics',true, 1, 5);
+INSERT INTO modules (name, startdate, enddate, description, isenabled, course_id, test_id) VALUES ('java module5','25-Oct-2015', '28-Oct-2015', 'Generics',true, 1, 5);
 INSERT INTO modules (name, startdate, enddate, description, isenabled, course_id, test_id) VALUES ('dotNet module1', '07-Oct-2015', '10-Oct-2015', 'Introducing to .Net',true, 2, 6);
 INSERT INTO modules (name, startdate, enddate, description, isenabled, course_id, test_id) VALUES ('dotNet module2', '11-Oct-2015', '14-Oct-2015','Collections',true, 2, 7);
 

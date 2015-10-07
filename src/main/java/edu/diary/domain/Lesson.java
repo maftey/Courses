@@ -2,6 +2,7 @@ package edu.diary.domain;
 
 public class Lesson extends AbstractUnit {
   private String text;
+ 
   private int moduleId;
 
   public int getModuleId() {
