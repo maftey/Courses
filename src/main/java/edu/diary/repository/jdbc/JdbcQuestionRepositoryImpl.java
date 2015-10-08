@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import edu.diary.domain.Question;
-import edu.diary.domain.Test;
+import edu.diary.domain.Tests;
 import edu.diary.repository.QuestionRepository;
 import edu.diary.util.DBConnection;
 import edu.diary.util.DateUtils;
@@ -121,7 +121,7 @@ public class JdbcQuestionRepositoryImpl implements QuestionRepository {
 		return question;
 	}
 	
-	public Set<Question> getAllForTest(Test test) {
+	public Set<Question> getAllForTest(Tests test) {
 		Set<Question> questions = new TreeSet<>();
 		
 		String getAll = "SELECT * FROM questions WHERE test_id = ?";

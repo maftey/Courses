@@ -46,10 +46,6 @@ public class TestModuleData {
 		public TestModule() {
 		}
 
-//		public TestModule copyOfModule() {
-//			return new TestModule(this);
-//		}
-
 		public TestModule(int id, String name, Calendar startDate,
 				Calendar endDate, String description, boolean isEnabled,
 				int courseId, int testId) {
@@ -64,32 +60,11 @@ public class TestModuleData {
 			this.setTestId(testId);
 		}
 
-//		public TestModule(TestModule testModule) {
-//			this(testModule.getId(), testModule.getName(), testModule
-//					.getStartDate(), testModule.getEndDate(), testModule
-//					.getEnabled(), testModule.getDescription(), testModule.getCourseId(),testModule.getTestId());
-//		}
-		
-				public TestModule(Module module) {
-				this(module.getId(), module.getName(), module.getStartDate(),
-						module.getEndDate(), module
-						.getDescription(), module.getEnabled(),module.getCourseId(),module.getTestId());
-			}
-		
-
-//			public TestModule(Integer id, String name, Calendar startDate,
-//					Calendar endDate, boolean enabled, String description) {
-//				// TODO Auto-generated constructor stub
-//			}
-		
-	
-	
-	
-	
-	
-	
-	
-	
+		public TestModule(Module module) {
+			this(module.getId(), module.getName(), module.getStartDate(),
+					module.getEndDate(), module.getDescription(), module
+							.getEnabled(), module.getCourseId(), module
+							.getTestId());
+		}
 	}
-
 }

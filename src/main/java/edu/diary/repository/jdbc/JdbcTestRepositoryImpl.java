@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
-import edu.diary.domain.Test;
+import edu.diary.domain.Tests;
 import edu.diary.repository.TestRepository;
 import edu.diary.util.DBConnection;
 import edu.diary.util.DateUtils;
@@ -20,7 +20,7 @@ public class JdbcTestRepositoryImpl implements TestRepository {
 	private static int rows = 0;
 
 	@Override
-	public Test save(Test test) {
+	public Tests save(Tests test) {
 
 		String insert = "INSERT INTO tests (name, startdate, enddate,"
 				+ " isenabled, passedscore) VALUES (?,?,?,?,?)";
@@ -49,9 +49,9 @@ public class JdbcTestRepositoryImpl implements TestRepository {
 	}
 
 	@Override
-	public Test update(Test test) {
+	public Tests update(Tests test, int id) {
 		String update = "UPDATE tests SET name = ?, startdate = ?, "
-				+ "enddate = ?, isenabled = ?, passedscore = ?";
+				+ "enddate = ?, isenabled = ?, passedscore = ? WHERE id =?";
 		try {
 			Connection conn = DBConnection.openConnection();
 			PreparedStatement preparedStatement = conn.prepareStatement(update);
@@ -62,6 +62,7 @@ public class JdbcTestRepositoryImpl implements TestRepository {
 					(DateUtils.calendarToSqlDate(test.getEndDate())));
 			preparedStatement.setBoolean(4, test.getEnabled());
 			preparedStatement.setInt(5, test.getPassedScore());
+			preparedStatement.setInt(6, id);
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
 				logger.info("Record is UPDATED into tests table" + test);
@@ -71,6 +72,39 @@ public class JdbcTestRepositoryImpl implements TestRepository {
 			rows = 0;
 		} catch (SQLException e) {
 			logger.info("UPDATED FAILED:" + e);
+		}
+		return test;
+	}
+
+	@Override
+	public Tests get(String name) {
+		String getCourse = "SELECT tests.id, tests.name, tests.startdate, tests.enddate,"
+				+ " tests.isenabled, tests.passedscore FROM tests "
+				+ "WHERE tests.name = ?";
+		Tests test = new Tests();
+		try {
+			Connection conn = DBConnection.openConnection();
+			PreparedStatement preparedStatement = conn
+					.prepareStatement(getCourse);
+			preparedStatement.setString(1, name);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				test.setId(resultSet.getInt("id"));
+				test.setName(resultSet.getString("name"));
+				test.setStartDate(DateUtils.sqlDateToCalendar(resultSet
+						.getDate("startdate")));
+				test.setEndDate(DateUtils.sqlDateToCalendar(resultSet
+						.getDate("endDate")));
+				test.setEnabled(resultSet.getBoolean("isenabled"));
+				test.setPassedScore(resultSet.getInt("passedscore"));
+			}
+			logger.info("Record got from tests table " + test);
+			DBConnection.close(resultSet);
+			DBConnection.close(preparedStatement);
+			DBConnection.closeConnection();
+		} catch (SQLException e) {
+
+			logger.info("Cannot get entry from DB " + e);
 		}
 		return test;
 	}
@@ -99,41 +133,9 @@ public class JdbcTestRepositoryImpl implements TestRepository {
 	}
 
 	@Override
-	public Test get(String name) {
-		String getCourse = "SELECT tests.name, tests.startdate, tests.enddate,"
-				+ " tests.isenabled, tests.description FROM tests "
-				+ "WHERE tests.name = ?";
-		Test test = new Test();
-		try {
-			Connection conn = DBConnection.openConnection();
-			PreparedStatement preparedStatement = conn
-					.prepareStatement(getCourse);
-			preparedStatement.setString(1, name);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				test.setName(resultSet.getString("name"));
-				test.setStartDate(DateUtils.sqlDateToCalendar(resultSet
-						.getDate("startdate")));
-				test.setEndDate(DateUtils.sqlDateToCalendar(resultSet
-						.getDate("endDate")));
-				test.setEnabled(resultSet.getBoolean("isenabled"));
-				test.setDescription(resultSet.getString("description"));
-			}
-			logger.info("Record got from tests table " + test);
-			DBConnection.close(resultSet);
-			DBConnection.close(preparedStatement);
-			DBConnection.closeConnection();
-		} catch (SQLException e) {
+	public Set<Tests> getAll() {
+		Set<Tests> tests = new TreeSet<>();
 
-			logger.info("Cannot get entry from DB " + e);
-		}
-		return test;
-	}
-
-	@Override
-	public Set<Test> getAll() {
-		Set<Test> tests = new TreeSet<>();
-		
 		String getAll = "SELECT * FROM tests";
 		try {
 			Connection conn = DBConnection.openConnection();
@@ -141,7 +143,8 @@ public class JdbcTestRepositoryImpl implements TestRepository {
 			Statement statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery(getAll);
 			while (resultSet.next()) {
-				Test test = new Test();
+				Tests test = new Tests();
+				test.setId(resultSet.getInt("id"));
 				test.setName(resultSet.getString("name"));
 				test.setStartDate(DateUtils.sqlDateToCalendar(resultSet
 						.getDate("startDate")));

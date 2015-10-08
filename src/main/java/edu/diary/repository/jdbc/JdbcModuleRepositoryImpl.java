@@ -78,7 +78,7 @@ public class JdbcModuleRepositoryImpl implements ModuleRepository {
 				}
 			System.out.println(module.getTestId());
 			preparedStatement.setInt(7, module.getCourseId());
-			preparedStatement.setInt(8, module.getId());
+			preparedStatement.setInt(8, id);
 
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {

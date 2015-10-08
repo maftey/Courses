@@ -59,6 +59,7 @@ public class Module extends AbstractUnit implements Comparable<Module> {
 				+ ", description: " + getDescription()
 				+ ", course id: " + getCourseId()
 				+ " test id: " + getTestId()
+				+ ", lessons: "+ getLessons()
 				+ "}";
 	}
 	

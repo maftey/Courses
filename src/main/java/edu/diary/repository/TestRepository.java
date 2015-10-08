@@ -1,21 +1,22 @@
 package edu.diary.repository;
 
 import java.util.Set;
-import edu.diary.domain.Test;
+import edu.diary.domain.Tests;
 
 public interface TestRepository {
-	Test save(Test test);
-
+	Tests save(Tests test);
+	
+	Tests update(Tests test, int id);
 	// false if not found
 	boolean delete(String name);
 
-	Test get(String name);
+	Tests get(String name);
 
 	// null if not found
-	Set<Test> getAll();
+	Set<Tests> getAll();
 
 	boolean deleteAll();
 
-	Test update(Test test);
+	
 
 }

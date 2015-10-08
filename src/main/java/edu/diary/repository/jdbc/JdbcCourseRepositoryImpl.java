@@ -76,7 +76,7 @@ public class JdbcCourseRepositoryImpl implements CourseRepository {
 			else
 				preparedStatement.setInt(6, course.getTestId());
 			
-			preparedStatement.setInt(7, course.getId());
+			preparedStatement.setInt(7, id);
 			rows = preparedStatement.executeUpdate();
 			if (rows > 0) {
 				logger.info("Record is UPDATED into courses table" + course);
